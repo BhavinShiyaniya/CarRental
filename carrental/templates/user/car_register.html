@@ -1,0 +1,197 @@
+{% extends "user_base.html" %}
+{% load static %}   
+{% load crispy_forms_tags %}
+
+{% block title %}Register - CarRental{% endblock title %}
+
+
+
+{% block content %}
+
+{% comment %} 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp' {% endcomment %}
+<hr>
+{% include "messages.html" %}
+<section class="vh-150 bg-image"
+  style="background-image: url({% static 'images/hero_1_a.jpg' %});margin-top:80px;">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Register your Car</h2>
+
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% comment %} {{ form|crispy }} {% endcomment %}
+
+                {% comment %} {% for formset in inlines %}
+                    {{ formset|crispy }}
+                {% endfor %} {% endcomment %}
+              
+
+                <div class="row">
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.brand|as_crispy_field }}
+                          <p class="text-danger">{{ form.brand.errors }}</p>
+                      </div>
+                  </div>
+
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.name|as_crispy_field }}
+                          <p class="text-danger">{{ form.name.errors }}</p>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.manufacture_year|as_crispy_field }}
+                          <p class="text-danger">{{ form.manufacture_year.errors }}</p>
+                      </div>
+                  </div>
+
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.transmission_type|as_crispy_field }}
+                          <p class="text-danger">{{ form.transmission_type.errors }}</p>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-2 pb-1">
+                        <div class="form-outline">
+                            {{ form.fuel_type|as_crispy_field }}
+                            <p class="text-danger">{{ form.fuel_type.errors }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-2 pb-1">
+                        <div class="form-outline">
+                            {{ form.car_type|as_crispy_field }}
+                            <p class="text-danger">{{ form.car_type.errors }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.seats|as_crispy_field }}
+                          <p class="text-danger">{{ form.seats.errors }}</p>
+                      </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-4 mb-2 pb-1">
+                    <div class="form-outline">
+                        {{ form.registration_no|as_crispy_field }}
+                        <p class="text-danger">{{ form.registration_no.errors }}</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4 mb-2 pb-1">
+                    <div class="form-outline">
+                        {{ form.km_driven|as_crispy_field }}
+                        <p class="text-danger">{{ form.km_driven.errors }}</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4 mb-2 pb-1">
+                    <div class="form-outline">
+                        {{ form.fare|as_crispy_field }}
+                        <p class="text-danger">{{ form.fare.errors }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-outline mb-2">
+                    {{ form.description|as_crispy_field }}
+                    <p class="text-danger">{{ form.description.errors }}</p>
+                </div>
+
+                <div class="form-outline mb-2">
+                    {{ form.pickup_address|as_crispy_field }}
+                    <p class="text-danger">{{ form.pickup_address.errors }}</p>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.pickup_city|as_crispy_field }}
+                          <p class="text-danger">{{ form.pickup_city.errors }}</p>
+                      </div>
+                  </div>
+
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.pickup_state|as_crispy_field }}
+                          <p class="text-danger">{{ form.pickup_state.errors }}</p>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.pickup_country|as_crispy_field }}
+                          <p class="text-danger">{{ form.pickup_country.errors }}</p>
+                      </div>
+                  </div>
+
+                  <div class="col-md-6 mb-2 pb-1">
+                      <div class="form-outline">
+                          {{ form.pickup_pincode|as_crispy_field }}
+                          <p class="text-danger">{{ form.pickup_pincode.errors }}</p>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="form-check form-switch">
+                  {% comment %} <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked> {% endcomment %}
+                  {{ form.is_active }}
+                  <label class="form-check-label" for="id_is_active">Available for Rent</label>
+                  <p class="text-danger">{{ form.is_active.errors }}</p>
+                </div>
+
+                <div class="form-outline mb-2">
+                </div>
+
+                {% comment %} Car Image Field {% endcomment %}
+
+                <div class="mb-3">
+                  <label for="car_images" class="form-label">Select Car Images</label>
+                  <input type="file" class="form-control" name="car_images" id="car_images" accept="image/*" multiple required>
+                </div>
+
+                {% comment %} <div class="form-check d-flex justify-content-center mb-5">
+                    <label class="form-check-label" for="form2Example3g">
+                        I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+                    </label>
+                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                </div> {% endcomment %}
+
+                <div class="d-flex justify-content-center">
+                  <input type="submit"
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" value="Register">
+                </div>
+
+                {% comment %} <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="{% url 'account_login' %}" {% endcomment %}
+                    {% comment %} class="fw-bold text-body"><u>Login here</u></a></p> {% endcomment %}
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

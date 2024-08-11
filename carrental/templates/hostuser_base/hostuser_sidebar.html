@@ -1,0 +1,69 @@
+{% load static %}
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link {% if 'dashboard' in request.path %} active {% else %} collapsed {% endif %}" href="{% url 'hostuser:dashboard' %}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% if 'carlist' in request.path %} active {% else %} collapsed {% endif %}" href="{% url 'hostuser:carlist' %}">
+          <i class="ri-car-line"></i>
+          <span>Car List</span>
+        </a>
+      </li><!-- End Car List Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% if 'hostbookinglist' in request.path %} active {% else %} collapsed {% endif %}" href="{% url 'hostuser:hostbookinglist' %}">
+          <i class="ri-file-list-3-line"></i>
+          <span>Booking List</span>
+        </a>
+      </li><!-- End Car List Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% if 'holdcarlist' in request.path %} active {% else %} collapsed {% endif %}" href="{% url 'hostuser:holdcarlist' %}">
+          <i class="fa fa-circle-stop"></i>
+          <span>Hold Car List</span>
+        </a>
+      </li><!-- End Hold Car List Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% if 'customerslist' in request.path %} active {% else %} collapsed {% endif %}" href="{% url 'hostuser:customerslist' %}">
+          <i class="fa fa-users"></i>
+          <span>Customers List</span>
+        </a>
+      </li><!-- End Customers List Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% if 'revenue-compare' in request.path %} active {% else %} collapsed {% endif %}" href="{% url 'hostuser:revenue-compare' %}">
+          <i class="fas fa-dollar-sign"></i>
+          <span>Revenue Compare</span>
+        </a>
+      </li><!-- End Revenue Compare Nav -->
+      
+
+      <li class="nav-heading">Pages</li>
+
+      <li class="nav-item">
+        <a class="nav-link {% if 'hostprofile' in request.path %} active {% else %} collapsed {% endif %}" href="{% url 'hostuser:hostprofile' pk=request.user.id %}">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'account_logout' %}">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Logout</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->

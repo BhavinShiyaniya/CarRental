@@ -1,0 +1,453 @@
+{% extends "hostuser_base/hostuser_base.html" %}
+{% load static %}
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {% comment %} <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css"> {% endcomment %}
+
+    
+{% endblock stylesheet %}
+
+{% block title %}CarRental - Dashboard {% endblock title %}
+
+{% block content %}
+  <main id="main" class="main">
+    {% include "messages.html" %}
+
+    <div class="pagetitle">
+      <h1>Car Detail</h1>
+
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'hostuser:dashboard' %}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'hostuser:carlist' %}">Car List</a></li>
+          <li class="breadcrumb-item active"><a href="{% url 'hostuser:hostcardetail' pk=car.id %}">Car Detail</a></li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Cars Card -->
+            <div class="col-xxl-12 col-md-6">
+                <!-- Start of Slick Slider -->
+                <div id="slidermain" class="slidermain">
+                {% for image in car.car_image_set.all %}
+                    <div>
+                        {% comment %} <img class="d-block" src="{{ image.car_images.url }}" style="min-height:400px;min-width:450px;"> {% endcomment %}
+                        <img class="rounded mx-auto d-block img-fluid" src="{{ image.car_images.url }}" width=80% height=auto>
+                    </div>
+                {% endfor %}
+                
+                </div>
+
+                <div id="slidernav" class="slidernav mt-3">
+                    {% for image in car.car_image_set.all %}
+                    <div style="width:154px;margin:5px">
+                        <img class="d-block" src="{{ image.car_images.url }}" width=auto height="100px">
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- End of Slick Slider -->
+            </div><!-- End Cars Card -->
+
+            
+
+            <!-- Reports -->
+            <div class="col-12">
+
+              <!-- Car Name Card Start -->
+              <div class="card">
+                <!-- Car Name Card Start -->
+                <div class="card-body">
+                    <div class="row pt-3">
+                      <!-- KM Driven Card Start -->
+                        <div class="col">
+                            <h3>{{ car.brand }} {{ car.name }} {{ car.manufacture_year }} </h3>
+                            <p>{{ car.km_driven }} km driven</p>
+                        </div>
+                      <!-- END KM Driven Card -->
+
+                      <!-- Registration No Card Start -->
+                        <div class="col d-flex justify-content-end">
+                            <h4 class="ml-1 text-center align-self-center"><i class="fa fa-id-card text-warning fa-xl float-left" style="margin-right:13px;"></i>{{ car.registration_no }}</h4>
+                        </div>
+                      <!-- END Registration No Card -->
+
+                      <!-- Fare Card Start -->
+                        <div class="col d-flex justify-content-end">
+                            <h4 class="ml-1 text-center align-self-center"><i class="fa fa-money-bill text-success fa-xl float-left" style="margin-right:13px;"></i>₹ {{ car.fare }} <span class="text-danger">/ hour</span></h4>
+                        </div>
+                      <!-- END Fare Card -->
+                        
+                    </div><hr>
+    
+                </div>
+              
+
+                <!-- Car Detail Row Start -->
+                <div class="row">
+
+                  <!-- Brand Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fa fa-briefcase text-primary fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Brand</span>
+                              <h5>{{ car.brand }}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Brand Card -->
+
+                  <!-- Model Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fa fa-car text-warning fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Model</span>
+                              <h5>{{ car.name }}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Model Card -->
+
+                  <!-- Transmission Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fa fa-gears text-grey fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Transmission</span>
+                              <h5>{{ car.transmission_type|title }}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Transmission Card -->
+
+                  <!-- Car Type Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fas fa-car text-danger fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Car Type</span>
+                              <h5>{{ car.car_type|title }}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Car Type Card -->
+
+                  <!-- Fuel Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fa fa-gas-pump text-danger fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Fuel</span>
+                              <h5>{{ car.fuel_type|title }}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Fuel Card -->
+
+                  <!-- Mileage Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fa fa-tachometer text-success fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Mileage</span>
+                              <h5>20 kmpl</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Mileage Card -->
+
+                  <!-- Year Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fa fa-calendar text-primary fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Year</span>
+                              <h5>{{ car.manufacture_year }}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Year Card -->
+
+                  <!-- Seats Card Start -->
+                  <div class="col-xl-3 col-sm-6 col-12"> 
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-body">
+                          <div class="media d-flex">
+                            <div class="align-self-center">
+                              <i class="fa fa-chair text-grey fa-2xl float-left" style="margin-right:15px;"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <span class="text-primary">Seats</span>
+                              <h5>{{ car.seats }}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END Seats Card -->
+
+                </div><!-- END Car Detail Row -->
+
+              </div>
+              <!-- END Car Name Card -->
+
+            </div><!-- End Reports -->
+
+
+            
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+          <!-- Actions Card Start -->
+          <div class="card">
+
+            <div class="card-body pb-3">
+              <h5 class="card-title">Actions</h5>
+
+              <!-- Car Status Card Start -->
+              <div class="col-xl-12 col-sm-12 col-12 d-flex justify-content-center"> 
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-body">
+                      <div class="media d-flex">
+                        {% if car.is_available == True and car.is_active == True %}
+                        <div class="align-self-center">
+                          <i class="ri-car-fill text-success fa-2xl float-left" style="margin-right:15px;"></i>
+                        </div>
+                        <div class="media-body text-right">
+                          <span class="text-primary">Availability</span>
+                          <h5>Ready for Rent</h5>
+                        </div>
+                        {% elif car.is_active == False %}
+                        <div class="align-self-center">
+                          <i class="ri-car-washing-fill text-warning fa-2xl float-left" style="margin-right:15px;"></i>
+                        </div>
+                        <div class="media-body text-right">
+                          <span class="text-primary">Availability</span>
+                          <h5>On Hold</h5>
+                        </div>
+                        {% else %}
+                        <div class="align-self-center">
+                          <i class="ri-car-washing-fill text-danger fa-2xl float-left" style="margin-right:15px;"></i>
+                        </div>
+                        <div class="media-body text-right">
+                          <span class="text-primary">Availability</span>
+                          <h5>On Rent</h5>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- END Car Status Card -->
+
+              <div class="row">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="button" id="carholdbtn"
+                    class="btn btn-warning me-md-2" data-bs-toggle="modal" data-bs-target="#CarHoldModal"><i class="fa fa-circle-stop fa-lg text-dark"></i></button>
+                    <a href="{% url 'hostuser:carupdate' pk=car.id %}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Update"><i class="fa fa-edit"></i></a>
+                    {% comment %} <button type="button" id="confirmdeletebtn" class="btn btn-danger me-md-2" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="fa fa-trash"></i></button> {% endcomment %}
+                    <label data-url="{% url 'hostuser:cardelete' pk=car.id %}" data-title="{car.id}" title="Delete" href="{% url 'hostuser:cardelete' pk=car.id %}" class="btn btn-danger confirmdeletebtn" data-id="{car.id}"><i class="fa fa-trash"></i></label>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- End Actions Card -->
+
+          <!-- About Car Card Start -->
+          <div class="card">
+
+            <div class="card-body pb-3">
+              {% comment %} <h5 class="card-title">Actions</h5> {% endcomment %}
+
+              <div class="container">
+                <h2 class="text-uppercase text-center mb-2 pt-4">About Car</h2><hr>
+                <p>{{ car.description }}</p>
+              </div>
+            </div>
+            
+          </div><!-- End About Car Card -->
+
+          <!-- Car Address Card Start -->
+          <div class="card">
+
+            <div class="card-body pb-3">
+              {% comment %} <h5 class="card-title">Actions</h5> {% endcomment %}
+
+              <h2 class="text-uppercase text-center mb-2 pt-4">Pickup Address</h2><hr>
+              <div class="row container">
+                <div class="text-justify text-center">
+                    <p>{{ car.pickup_address }}, {{ car.pickup_city }}, {{ car.pickup_state }}, {{ car.pickup_country }} - {{ car.pickup_pincode }} </p>
+                </div>
+              </div>
+
+              <hr>
+              <div class="row d-flex justify-content-end">
+                <p class="ml-1 text-end align-self-end"><i class="fa fa-user-circle grey fa-2xl float-left" style="margin-right:13px;"></i>Owned by, <span class="text-danger">{{ car.owner }}</span></p>
+              </div>
+            </div>
+            
+          </div><!-- End Car Address Card -->
+
+
+        </div><!-- End Right side columns -->
+
+      </div>
+
+    </section>
+    
+    <!--  CarHold Modal -->
+<div class="modal fade" id="CarHoldModal" tabindex="-1">
+
+    {% include "hostuser/car_hold_createform.html" %}
+</div>
+
+    <!--  Confirm Delete Modal -->
+    {% comment %} {% include "hostuser/confirm_delete_modal.html" %} {% endcomment %}
+
+  </main><!-- End #main -->
+
+{% endblock content %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Slick Slider JS -->
+    <script>
+        $('.slidermain').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.slidernav'
+        });
+        $('.slidernav').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            asNavFor: '.slidermain',
+            dots: true,
+            centerMode: true,
+            focusOnSelect: true
+        });
+
+    </script>
+
+    <script>
+
+      $(document).on('click', '.confirmdeletebtn', function (e) {
+        var id = $(this).data("id")
+        console.log(id)
+        var url = $(this).data("url")
+        console.log(url)
+        //var delete_ele = $(this)
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+    
+                    data: {
+                        "id": id ,
+                        "csrfmiddlewaretoken": '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                      //delete_ele.parent().parent().remove();
+                      location.replace("{% url 'hostuser:carlist' %}") 
+                    }
+                });
+            }
+        })
+      });
+    
+    </script>
+
+{% endblock javascripts %}

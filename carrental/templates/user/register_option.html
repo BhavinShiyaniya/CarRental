@@ -1,0 +1,46 @@
+{% extends "user_base.html" %}
+{% load static %}   
+{% load crispy_forms_tags %}
+
+{% block title %}Register - CarRental{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row mx-0">
+            <div class="col-lg-6 px-0">
+                <div class="px-5 d-flex align-items-center justify-content-between" style="height: 350px;background-color:#2B2E4A;">
+                    <img class="img-fluid flex-shrink-0 ml-n5 w-50 mr-4" src="{% static 'images/option_car_01.png' %}" alt="">
+                    <div class="text-right">
+                        <h3 class="text-uppercase text-light mb-3">Looking for a car?</h3>
+                        <p class="mb-4" style="color:#8486A0;">Want to going somewhere and worried about car?Now Book Car on rent and Enjoy!!</p>
+                        <a class="btn py-2 px-4 text-light" href="{% url 'car:index' %}" style="background-color:#F77D0A;">Explore Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 px-0">
+                <div class="px-5 d-flex align-items-center justify-content-between" style="height: 350px;background-color:#1C1E32;">
+                    <div class="text-left">
+                        <h3 class="text-uppercase text-light mb-3">Want to rent your car?</h3>
+                        <p class="mb-4" style="color:#8486A0;">Join our 10T+ cars Rental Community by Rent your car with us and earn!</p>
+                        <a class="btn py-2 px-4 text-light" href="{% url 'user:carregister' %}" style="background-color:#F77D0A;">Register Your Car Now</a>
+                    </div>
+                    <img class="img-fluid flex-shrink-0 mr-n5 w-50 ml-4" src="{% static 'images/option_car_02.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+
+{% comment %} color code {% endcomment %}
+{% comment %} --primary: #F77D0A;
+    --text: #8486A0
+    --secondary: #2B2E4A;
+    --light: #F4F5F8;
+    --dark: #1C1E32; {% endcomment %}

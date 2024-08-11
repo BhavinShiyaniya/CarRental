@@ -1,0 +1,236 @@
+{% extends "hostuser_base/hostuser_base.html" %}
+{% load static %}
+
+{% block title %}CarRental - Dashboard {% endblock title %}
+
+{% block content %}
+  <main id="main" class="main">
+    {% include "messages.html" %}
+
+    <div class="pagetitle">
+      <h1>Revenue Compare</h1>
+
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active"><a href="{% url 'hostuser:dashboard' %}">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="{% url 'hostuser:revenue-compare' %}">Revenue Compare</a></li>
+
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="container">
+            <form class="row g-3" action="" method="GET">
+                <div class="col-md-6">
+                    <div class="col-md-12">
+                      <div class="form-floating">
+                        <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Start Date">
+                        <label for="start_date">Start Date</label>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-12">
+                      <div class="form-floating">
+                        <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End Date">
+                        <label for="end_date">End Date</label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="car1" id="car1">
+                                {% if usercars %}
+                                {% for car in usercars %}
+                                <option value="{{car.id}}">{{ car }}</option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                            <label for="car1">Car 1</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="car2" id="car2">
+                                {% if usercars %}
+                                {% for car in usercars %}
+                                <option value="{{car.id}}">{{ car }}</option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                            <label for="car1">Car 2</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="car3" id="car3">
+                                {% if usercars %}
+                                {% for car in usercars %}
+                                <option value="{{car.id}}">{{ car }}</option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                            <label for="car3">Car 3</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" id="search" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="container-fluid" id="search_list">
+            <div class="row mt-5">
+                
+            {% if top_cars_list %}
+                {% for rev in revenue %}
+                {% for car in top_cars_list %}
+                {% if car.id == rev.car %}
+                {% comment %} {{revenue}} {% endcomment %}
+                {% comment %} {{revenue.0.totalearning}}
+                {{revenue.0.net_commision}}
+                {{revenue.0.net_earning}} {% endcomment %}
+                <div class="col-sm-4">
+                    <div class="card">
+                        {% if car == top_cars_list.0 %}
+                        <i class="fa-solid fa-medal text-success fa-xl ms-2 z-1"> 1</i>
+                        {% elif car == top_cars_list.1 %}
+                        <i class="fa-solid fa-medal text-danger fa-xl ms-2 z-1"> 2</i>
+                        {% elif car == top_cars_list.2 %}
+                        <i class="fa-solid fa-medal fa-xl text-secondary ms-2 z-1"> 3</i>
+                        {% endif %}
+                        
+                        <img src="{{ car.car_image_set.all.0.car_images.url }}" class="card-img-top rounded" height="250px" width="100%">
+                        <div class="card-body pt-4 px-0">
+                        <div class="d-flex flex-row justify-content-between mb-0 px-3">
+                            <h6 class="text-dark mt-1">{{ car.brand }} {{ car.name }} {{ car.manufacture_year }}</h6>
+                            <h6>₹ {{ car.fare }} / hour</h6>
+                            {% comment %} <h6>{{ car.registration_no }}</h6> {% endcomment %}
+                        </div>
+                        <div class="d-flex flex-row justify-content-between mb-0 px-3">
+                            <small class="text-danger">({{ car.registration_no }})</small>
+                        </div>
+                        <hr class="mt-2 mx-3">
+                        <div class="d-flex flex-row justify-content-between px-3 pb-4">
+                            <div class="d-flex flex-column"><span class="text-muted">Total Earning</span><h5 class="text-primary text-center">₹ {{ rev.totalearning|floatformat:0 }}</h5></div>
+                            <div class="d-flex flex-column"><span class="text-muted">Commision</span><h5 class="text-danger text-center">₹ {{ rev.net_commision|floatformat:0 }}</h5></div>
+                            <div class="d-flex flex-column"><span class="text-muted">Net Earning</span><h5 class="text-success text-center">₹ {{ rev.net_earning|floatformat:0 }}</h5></div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between p-3 mid">
+                            <div class="d-flex flex-column"><span class="text-muted">Total Bookings</span><h5 class="text-center">{{ rev.booking }}</h5></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+            {% endif %}
+          
+            </div>
+        </div>
+    </section>
+    
+  </main><!-- End #main -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+{% comment %} <script>  {% endcomment %}
+   
+    {% comment %} $('#car1').on('change', function() { 
+        var car1 = document.getElementById("car1");  
+        var car2 = document.getElementById("car2");  
+        var car3 = document.getElementById("car3");  
+        console.log(car1.selectedIndex);
+        car2.remove(car1.selectedIndex);
+        car3.remove(car1.selectedIndex);
+        console.log("completed")
+    }); 
+
+    $('#car2').on('change', function() { 
+        var car1 = document.getElementById("car1");  
+        var car2 = document.getElementById("car2");  
+        var car3 = document.getElementById("car3");  
+        console.log(car2.selectedIndex);
+        car1.remove(car2.selectedIndex);
+        car3.remove(car2.selectedIndex);
+        console.log("completed")
+    }); 
+
+    $('#car3').on('change', function() { 
+        var car1 = document.getElementById("car1");  
+        var car2 = document.getElementById("car2");  
+        var car3 = document.getElementById("car3");  
+        console.log(car3.selectedIndex);
+        car1.remove(car3.selectedIndex);
+        car2.remove(car3.selectedIndex);
+        console.log("completed")
+    }); 
+</script> {% endcomment %}
+<script>
+    const $select1 = document.querySelector('#car1');
+    $select1.value = {{top_cars_list.0.id}};
+    const $select2 = document.querySelector('#car2');
+    $select2.value = {{top_cars_list.1.id}};
+    const $select3 = document.querySelector('#car3');
+    $select3.value = {{top_cars_list.2.id}};
+    
+
+    {% comment %} var car1 = document.getElementById("car1");  
+    var car2 = document.getElementById("car2");  
+    var car3 = document.getElementById("car3");  
+
+    car1.selectedIndex = {{top_cars_list.0.id}}
+    car2.selectedIndex = {{top_cars_list.1.id}}
+    car3.selectedIndex = {{top_cars_list.2.id}}  {% endcomment %}
+
+    // car ajax search start
+    $("#search").on("click", function(){
+        console.log("+++++++++++++++++++++++++++++++++++")
+        var start_date = document.getElementById("start_date").value;
+        console.log(start_date)
+        var end_date = document.getElementById("end_date").value;
+        console.log(end_date)
+        var car1 = document.getElementById("car1").value;
+        console.log(car1)
+        var car2 = document.getElementById("car2").value;
+        console.log(car2)
+        var car3 = document.getElementById("car3").value;
+        console.log(car3)
+     
+    
+    console.log("+++++++++++++++++++++++++++++++++++")
+    
+    $.ajax({
+        type: "GET",
+        url: "{% url 'hostuser:revenue-compare-ajax' %}",
+        data: {
+            "start_date": start_date,
+            "end_date": end_date,
+            "car1": car1,
+            "car2": car2,
+            "car3": car3,
+        },
+        success: function(data) {
+            console.log("::",data.object_list)
+            $("#search_list").html(data.object_list);
+            
+        }
+    }) 
+});
+// car ajax search end
+</script>
+
+{% endblock javascripts %}

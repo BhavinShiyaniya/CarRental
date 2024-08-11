@@ -1,0 +1,99 @@
+{% extends "user_base.html" %}
+{% load static %}   
+{% load crispy_forms_tags %}
+
+{% block title %}Register - CarRental{% endblock title %}
+
+{% block content %}
+
+{% comment %} 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp' {% endcomment %}
+<hr>
+{% include "messages.html" %}
+<section class="vh-150 bg-image"
+  style="background-image: url({% static 'images/hero_1_a.jpg' %});margin-top:80px;">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+              <form method="POST">
+                {% csrf_token %}
+
+                {% comment %} {{ form|crispy }} {% endcomment %}
+                
+                <div class="form-outline mb-2">
+                    {{ form.username|as_crispy_field }}
+                    <p class="text-danger">{{ form.username.errors }}</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2 pb-1">
+                        <div class="form-outline">
+                            {{ form.first_name|as_crispy_field }}
+                            <p class="text-danger">{{ form.first_name.errors }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-2 pb-1">
+
+                        <div class="form-outline">
+                            {{ form.last_name|as_crispy_field }}
+                            <p class="text-danger">{{ form.last_name.errors }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="form-outline mb-2">
+                        {{ form.email|as_crispy_field }}
+                        <p class="text-danger">{{ form.email.errors }}</p>
+                      </div>
+
+                <div class="form-outline mb-2">
+                    {{ form.contact|as_crispy_field }}
+                    <p class="text-danger">{{ form.contact.errors }}</p>
+                </div>
+
+                <div class="form-outline mb-2">
+                    {{ form.password1|as_crispy_field }}
+                    <p class="text-danger">{{ form.password1.errors }}</p>
+                </div>
+
+                <div class="form-outline mb-2">
+                    {{ form.password2|as_crispy_field }}
+                    <p class="text-danger">{{ form.password2.errors }}</p>
+                </div>
+
+                <div class="form-outline mb-2">
+                  {{ form.profile_image|as_crispy_field }}
+                  <p class="text-danger">{{ form.profile_image.errors }}</p>
+                </div>
+
+                {% comment %} <div class="form-check d-flex justify-content-center mb-5">
+                    <label class="form-check-label" for="form2Example3g">
+                        I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+                    </label>
+                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                </div> {% endcomment %}
+
+                <div class="d-flex justify-content-center">
+                  <input type="submit"
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" value="Register">
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="{% url 'account_login' %}"
+                    class="fw-bold text-body"><u>Login here</u></a></p>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

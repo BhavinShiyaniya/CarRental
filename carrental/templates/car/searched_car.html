@@ -1,0 +1,57 @@
+<div class="site-section bg-light" id="search_list">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <h2 class="section-heading"><strong>Search Results</strong></h2>
+        <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>    
+      </div>
+    </div>
+
+    <div class="row">
+      {% if object_list %}
+      {% for car in object_list %}
+      {% comment %} {% if car.is_active == True %} {% endcomment %}
+      <div class="col-md-6 col-lg-4 mb-4">
+
+        <div class="listing d-block  align-items-stretch">
+          <div class="listing-img h-100 mr-4">
+            
+            <a href="{% url 'car:cardetail' pk=car.id %}"><img src="{{ car.car_image_set.all.0.car_images.url }}" alt="Image" class="img-fluid" style="height:170px;"></a>
+          </div>
+          <div class="listing-contents h-100">
+            <a href="{% url 'car:cardetail' pk=car.id %}"><h3>{{ car.brand }} {{ car.name }} {{ car.manufacture_year }}</h3></a>
+            <div class="rent-price">
+              <strong>₹ {{ car.fare }}</strong><span class="mx-1">/</span>hour
+            </div>
+            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+              <div class="listing-feature pr-4">
+                <span class="caption">Fuel:</span>
+                <span class="number">{{ car.fuel_type }}</span>
+              </div>
+              <div class="listing-feature pr-4">
+                <span class="caption">Transmission:</span>
+                <span class="number">{{ car.transmission_type }}</span>
+              </div>
+              <div class="listing-feature pr-4">
+                <span class="caption">Passenger:</span>
+                <span class="number">{{ car.seats }}</span>
+              </div>
+            </div>
+            <div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
+              <p><a href="{% url 'car:cardetail' pk=car.id %}" class="btn btn-primary btn-sm">Rent Now</a></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      {% comment %} {% endif %} {% endcomment %}
+      {% endfor %}
+      {% else %}
+      <div class="jumbotron w-100">
+        <h1 class="text-danger text-center">Sorry, No cars available for searched data.</h1>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

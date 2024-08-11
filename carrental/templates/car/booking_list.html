@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CarRental - Order List {% endblock %}
+
+{% block stylesheet %}
+<style>
+    .hero.inner-page, .hero.inner-page > .container > .row {
+      height: 10vh !important;
+      min-height: 80px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+        <div class="hero inner-page" style="background-image: url({% static 'images/hero_1_a.jpg' %});"></div>
+        <hr>
+
+        {% include "messages.html" %}
+        <section>
+            <div class="container my-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card shadow">
+                            <div class="card header">
+                                <h3 class="m-4">My Bookings</h3>
+                            </div>
+            
+                            <div class="card-body">
+                                <table class="table tablebordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Booking Date</th>
+                                            <th class="text-center">Total Price</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for booking in bookinglist %}
+                                            <tr>
+                                                <td class="text-center"> {{ forloop.counter }}</td>
+                                                <td class="text-center"> {{ booking.pickup_datetime }}</td>
+                                                <td class="text-center"> {{ booking.total_fare }}</td>
+                                                {% comment %} <td class="badge badge-pill my-2 badge-success"> Success</td> {% endcomment %}
+                                                <td class="text-center badge badge-pill my-3 text-light {% if booking.booking_status == "CONFIRMED" %}bg-primary{% elif booking.booking_status == "PICKEDUP" %}bg-warning{% elif booking.booking_status == "DROPPED" %}bg-success{% elif booking.booking_status == "CANCELLED" %}bg-danger{% else %}bg-light{% endif %}"> {{ booking.booking_status }}</td>
+                                                <td class="text-center">
+                                                    <a href="{% url 'car:bookingdetail' booking.id %}" class="btn btn-primary">View</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </section>
+
+
+{% endblock content %}

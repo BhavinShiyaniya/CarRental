@@ -1,0 +1,717 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static '/fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static '/css/jquery.fancybox.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static '/fonts/flaticon/font/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static '/css/aos.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+
+    <style>
+        .hero.inner-page, .hero.inner-page > .container > .row {
+            height: 10vh !important;
+            min-height: 80px;
+        }
+    </style>
+    <title>CarRental - Rent Car and Enjoy! </title>
+</head>
+<body>
+    <div class="site-wrap" id="home-section">
+
+        <!-- Navbar -->
+        {% include "navbar.html" %}
+
+        <div class="hero inner-page" style="background-image: url({% static 'images/hero_1_a.jpg' %});"></div>
+        <hr>
+
+      {% include "messages.html" %}
+       <section>
+           <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- <img src="{% static 'images/car_1.jpg' %}" class="img-fluid" alt=""> -->
+
+                        <!-- Start of Slick Slider -->
+                        <div id="slidermain" class="slidermain">
+                            {% for image in car.car_image_set.all %}
+                            <div>
+                                {% comment %} <img class="d-block w-100" src="{{ image.car_images.url }}" height="400px"> {% endcomment %}
+                                <img class="rounded mx-auto d-block img-fluid" src="{{ image.car_images.url }}" width=80% height=auto>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+
+                        <div id="slidernav" class="slidernav mt-3">
+                            {% for image in car.car_image_set.all %}
+                            <div style="width:154px;margin:5px">
+                                <img class="d-block w-100" src="{{ image.car_images.url }}" width=auto height="100px">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- End of Slick Slider -->
+
+                        <div>
+                            <div class="row">
+                                <div class="col">
+                                    <h3>{{ car.brand }} {{ car.name }} {{ car.manufacture_year }} </h3>
+                                    <p>{{ car.km_driven }} km driven</p>
+                                </div>
+                                <div class="col d-flex justify-content-end">
+                                    <div class="align-self-center">
+                                        <i class="fa fa-money-bill success fa-2xl float-left"></i>
+                                    </div>
+                                    <h4 class="ml-1 text-center align-self-center">₹ {{ car.fare }} <span class="text-danger">/ hour</span></h4>
+                                </div>
+                                
+                            </div><hr>
+
+                            <div class="row">
+                                <div class="col-xl-3 col-sm-6 col-12"> 
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-briefcase primary fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Brand</span>
+                                            <h5>{{ car.brand }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-car warning fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Model</span>
+                                            <h5>{{ car.name }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-gears success fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Transmission</span>
+                                            <h5>{{ car.transmission_type }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fas fa-car danger fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                              <span class="text-primary">Car Type</span>
+                                              <h5>{{ car.car_type }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-xl-3 col-sm-6 col-12"> 
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-gas-pump primary fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Fuel</span>
+                                            <h5>{{ car.fuel_type }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-tachometer fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Mileage</span>
+                                            <h5>20 kmpl</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-calendar success fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Year</span>
+                                            <h5>{{ car.manufacture_year }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-chair danger fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                              <span class="text-primary">Seats</span>
+                                              <h5>{{ car.seats }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="container">
+                                <h3><strong>About Car</strong></h3>
+                                <hr>
+                                <p>{{ car.description }}</p>
+                              </div>
+
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-lg-4 col-md-offset-4">
+                        <div class="card" style="border-radius:15px;">
+                            <div class="card-body">
+                                <h2 class="text-uppercase text-center mb-2">Book Now!</h2>
+
+                                <form method="POST" id="estimateForm" onsubmit="return getEstimatedFair();">
+                                    {% csrf_token %}
+                  
+                                  <div class="form-group form-outline mb-2">
+                                      <label class="form-label" for="pickupdatetime">Pickup Date & Time</label>
+                                    <input type="datetime-local" onchange="getEstimatedFair()" name="pickupdatetime" id="pickupdatetime" class="form-control form-control-lg" required />
+                                  </div>
+                  
+                                  {% comment %} <div class="form-group form-outline mb-2">
+                                      <label class="form-label" for="pickuptime">Pickup Time</label>
+                                    <input type="time" name="pickuptime" id="pickuptime" class="form-control form-control-lg" />
+                                  </div> {% endcomment %}
+                  
+                                  <div class="form-group form-outline mb-2">
+                                      <label class="form-label" for="returndatetime">Estimated Returning Date & Time</label>
+                                    <input type="datetime-local" name="returndatetime" id="returndatetime" class="form-control form-control-lg" onchange="getEstimatedFair()" required />
+                                  </div>
+                  
+                                  {% comment %} <div class="form-group form-outline mb-2">
+                                      <label class="form-label" for="returntime">Estimated Returning Time</label>
+                                    <input type="time" name="returntime" id="returntime" class="form-control form-control-lg" />
+                                  </div> {% endcomment %}
+                                  <input type="hidden" name="car" value="{{ car.id }}" />
+
+                                  <div id="form-error text-danger"></div>
+                                  <div class="d-flex justify-content-center">
+                                    <button type="submit"
+                                      class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Get Estimate</button>
+                                  </div>
+                  
+                                </form>
+                  
+                
+                            </div>
+                            <div class="card-body">
+                              <h2 class="text-uppercase text-center mb-2">Estimated Fare</h2><hr>
+                              <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <h4 class="float-md-left">Time: </h4>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <h4 class="float-md-right" id="totalhours">0 hours</h4>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <h4 class="float-md-left">Fare: </h4>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <h4 class="float-md-right">{{ car.fare }} / hour</h4>
+                                </div>
+                              </div>
+                              <hr>
+
+                              <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <h4 class="float-md-left">Total Fare: </h4>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <h4 class="float-md-right text-dark bg-success" id="totalfare">₹ 0</h4>
+                                </div>
+                              </div>
+                              
+                              <!-- Button trigger modal -->
+                              <div class="d-flex justify-content-center mt-2">
+                                <button type="button" id="booknowbtn"
+                                  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" data-toggle="modal" data-target="#confirmBookingModal" onclick="sendData()" disabled>Book Now</button>
+                              </div>
+
+                          </div>
+                          </div>
+
+                          <div class="card" style="border-radius:15px;">
+                            <div class="card-body">
+                                <h2 class="text-uppercase text-center mb-2">Pickup Address</h2><hr>
+                                <div class="row container">
+                                  <div class="text-justify">
+                                      <h4>{{ car.pickup_address }}, {{ car.pickup_city }}, {{ car.pickup_state }}, {{ car.pickup_country }} - {{ car.pickup_pincode }} </h4>
+                                  </div>
+                                </div>
+
+                                <hr>
+                                <div class="row d-flex justify-content-end">
+                                  <div class="align-self-center">
+                                      <i class="fa fa-user-circle grey fa-2xl float-left"></i>
+                                  </div>
+                                  <h4 class="ml-1 text-center align-self-center">Owned by, <span class="text-danger">{{ car.owner }}</span></h4>
+                                </div>
+
+                              
+                                
+                            </div>
+                          </div>
+                          
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmBookingModal" tabindex="-1" role="dialog" aria-labelledby="confirmBookingModal" aria-hidden="true">
+          <div class="modal-dialog" role="document"> <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Confirm Booking</h5>
+                <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form id="confirmBookingForm" action={% url 'car:rent' %} method="POST" onchange="getEditedEstimatedFair()">
+              <div class="modal-body">
+                  {% csrf_token %}
+
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-outline">
+                            {{ bookingform.car }}
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-outline">
+                            {{ bookingform.pickup_datetime|as_crispy_field }}
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-outline">
+                            {{ bookingform.drop_datetime|as_crispy_field }}
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-outline">
+                            {{ bookingform.total_fare|as_crispy_field }}
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-outline">
+                            {{ bookingform.total_hours|as_crispy_field }}
+                        </div>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <p class="text-danger" id="form-error"></p>
+                    </div>
+                  </div>
+
+                  {% comment %} <div hidden>
+                  {{ bookingform.car|as_crispy_field }}
+                  </div>
+                  {{ bookingform.pickup_datetime|as_crispy_field }}
+                  {{ bookingform.drop_datetime|as_crispy_field }}
+                  {{ bookingform.total_fare|as_crispy_field }}
+                  {{ bookingform.total_hours|as_crispy_field }} {% endcomment %}
+                  {% comment %} <input type="submit" class="btn btn-primary" value="Confirm Booking" /> {% endcomment %}
+
+                {% comment %} </form> {% endcomment %}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary closebtn" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmBookingBtn" onclick="checkAvailability()">Confirm Booking</button>
+              </div>
+            </form>
+            </div>
+
+          </div>
+        </div>
+
+
+    
+    </div>
+
+
+    <script src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static '/js/popper.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static '/js/jquery.sticky.js' %}"></script>
+    <script src="{% static '/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static '/js/jquery.animateNumber.min.js' %}"></script>
+    <script src="{% static '/js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static '/js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static '/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static '/js/aos.js' %}"></script>
+    <!-- <script src="{% static '/js/slick.min.js' %}"></script> -->
+    
+    {% comment %} <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script> {% endcomment %}
+    {% comment %} <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> {% endcomment %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="{% static '/js/main.js' %}"></script>
+
+    <!-- Slick Slider JS Start -->
+    <script>
+        $('.slidermain').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.slidernav'
+        });
+        $('.slidernav').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            asNavFor: '.slidermain',
+            dots: true,
+            centerMode: true,
+            focusOnSelect: true
+        });
+    </script>
+  <!-- Slick Slider JS End -->
+
+    <script>
+
+      // start of date validations
+      // setting min date for pickupdatetime
+      var minDate = new Date().toISOString().slice(0,16);
+      console.log("minDate", minDate);
+    
+      //To restrict past date
+      $('#pickupdatetime').attr('min', minDate);
+      $('#returndatetime').attr('min', minDate);  
+
+      //To restrict past date on bookingConfirm Form
+      $('#id_pickup_datetime').attr('min', minDate);
+      $('#id_drop_datetime').attr('min', minDate);  
+      
+      // setting min date for pickupdatetime
+
+      var currentDate = new Date();
+      var nextWeekDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+      var maxDate = nextWeekDate.toISOString().slice(0, 16);
+      console.log("nextWeekDate", nextWeekDate);
+      console.log("maxDate", maxDate);
+      //To restrict future date
+      $('#pickupdatetime').attr('max', maxDate);
+      $('#returndatetime').attr('max', maxDate);  
+
+      //To restrict future date on bookingConfirm Form
+      $('#id_pickup_datetime').attr('max', maxDate);
+      $('#id_drop_datetime').attr('max', maxDate); 
+
+      // end of date validations
+
+
+      // calculating estimate fair on get Estimate button click
+      var calculateFare;
+      var hoursRounded;
+      function getEstimatedFair(){
+        var pickupdatetime = document.getElementById("estimateForm").elements.item(1).value;
+        var returndatetime = document.getElementById("estimateForm").elements.item(2).value;
+        var booknowbtn = document.getElementById("booknowbtn");
+        
+        console.log("pickupdatetime: ", pickupdatetime);
+        console.log("returndatetime: ", returndatetime);
+
+        dt1 = new Date(pickupdatetime);
+        dt2 = new Date(returndatetime);
+        // var diff = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate(), dt2.getHours(), dt2.getMinutes()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate(), dt1.getHours(), dt1.getMinutes()) ) /(1000 * 60 * 60 * 24));
+
+        var difference = dt2.getTime() - dt1.getTime();
+        var diff = Math.round(difference / 60000);
+        var minutes = Math.round(difference / 60000);
+        var hours = Math.abs(dt2 - dt1) / (60*60*1000);
+        hoursRounded = parseInt(Math.round(hours));
+        console.log("difference: ", difference);
+        console.log("minutes: ", minutes);
+        console.log("hours: ", hours);
+        console.log("round hours: ", hoursRounded);
+        console.log("diff: ", diff);
+        
+        var totalhours = document.getElementById("totalhours");
+        totalhours.innerHTML = hoursRounded + " hours";
+        // changed line
+        car_fare = {{ car.fare }} 
+        calculateFare = hoursRounded * parseInt(car_fare);
+        // end
+        var totalfare = document.getElementById("totalfare");
+        totalfare.innerHTML = "₹ " + calculateFare;
+
+        console.log("fare: ", calculateFare);
+
+        //function to check startdate is not greater than end date
+        //if(pickupdatetime >= returndatetime) {
+        //  alert("Drop datetime need to be bigger then Pickup datetime");
+        //} 
+
+        if(hoursRounded <= 0 || pickupdatetime >= returndatetime){
+          booknowbtn.setAttribute('disabled', '');
+          alert("Please select a valid Pickup and Drop time.");
+        }
+        else{
+          booknowbtn.removeAttribute("disabled");
+        }
+        
+        return false;
+      }
+
+      // on change confirm edit form
+      function getEditedEstimatedFair(){
+
+        var editedpickupdatetime = document.getElementById("confirmBookingForm").elements.item(2).value;
+        var editedreturndatetime = document.getElementById("confirmBookingForm").elements.item(3).value;
+        var t_fare = document.getElementById("confirmBookingForm").elements.item(4);
+        var t_hours = document.getElementById("confirmBookingForm").elements.item(5);
+        
+        console.log("editedpickupdatetime: ", editedpickupdatetime);
+        console.log("editedreturndatetime: ", editedreturndatetime);
+
+        dt1 = new Date(editedpickupdatetime);
+        dt2 = new Date(editedreturndatetime);
+        // var diff = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate(), dt2.getHours(), dt2.getMinutes()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate(), dt1.getHours(), dt1.getMinutes()) ) /(1000 * 60 * 60 * 24));
+
+        var difference = dt2.getTime() - dt1.getTime();
+        var diff = Math.round(difference / 60000);
+        var minutes = Math.round(difference / 60000);
+        var hours = Math.abs(dt2 - dt1) / (60*60*1000);
+        hoursRounded = Math.round(hours);
+        console.log("minutes: ", minutes);
+        console.log("hours: ", hours);
+        console.log("round hours: ", hoursRounded);
+        console.log("diff: ", diff);
+        
+        var totalhours = document.getElementById("totalhours");
+        totalhours.innerHTML = hoursRounded + " hours";
+        // changed line
+        car_fare = {{ car.fare }} 
+        calculateFare = hoursRounded * parseInt(car_fare);
+        // end
+        var totalfare = document.getElementById("totalfare");
+        totalfare.innerHTML = "₹ " + calculateFare;
+
+        console.log("fare: ", calculateFare);
+
+        t_fare.value = calculateFare;
+        t_hours.value = hoursRounded;
+
+        var submitBtn = document.getElementById("confirmBookingBtn");
+
+        //function to check startdate is not greater than end date
+        //if(editedpickupdatetime >= editedreturndatetime) {
+          //alert("Drop datetime need to be bigger then Pickup datetime");
+          //booknowbtn.setAttribute('disabled', '');
+          //submitBtn.setAttribute('disabled', '');
+        //} 
+
+        if(hoursRounded <= 0 || editedpickupdatetime >= editedreturndatetime){
+          booknowbtn.setAttribute('disabled', '');
+          submitBtn.setAttribute('disabled', '');
+          alert("Please select a valid Pickup and Drop time.");
+        }
+        else{
+          booknowbtn.removeAttribute("disabled");
+          submitBtn.removeAttribute("disabled");
+        }
+
+      }
+
+      // send data on confirm Booking click button
+      function sendData(){
+        var pickupdatime = document.getElementById("estimateForm").elements.item(1).value;
+        var returndatime = document.getElementById("estimateForm").elements.item(2).value;
+
+        var car = document.getElementById("id_car");
+        car.value = {{ car.id }};
+        console.log(car.value)
+
+        var pickupdt = document.getElementById("id_pickup_datetime");
+        pickupdt.value = pickupdatime;
+        console.log(pickupdt.value)
+
+
+        var dropdt = document.getElementById("id_drop_datetime");
+        dropdt.value = returndatime;
+        
+        var total_hours = document.getElementById("id_total_hours");
+        total_hours.value = hoursRounded;
+
+        var totalf = document.getElementById("id_total_fare");
+        totalf.value = calculateFare;
+      }
+
+      // fill form data using sessionStorage
+      $(window).on('load', function() {
+        // sessionStorage get data
+        var pickup_datetime = sessionStorage.getItem("pickup_datetime");
+        console.log("pickup_datetime:: ", pickup_datetime)
+        var drop_datetime = sessionStorage.getItem("drop_datetime");
+        console.log("drop_datetime:: ", drop_datetime)
+
+
+        if (pickup_datetime !== null) {
+          document.getElementById("pickupdatetime").value = pickup_datetime;
+        }
+    
+        if (drop_datetime !== null) {
+          document.getElementById("returndatetime").value = drop_datetime;
+        }
+
+        getEstimatedFair();
+      });
+
+
+      // reset the form on click of close button
+      $('.closebtn').on('click', function () {
+        $('#confirmBookingForm')[0].reset();
+        $("#form-error").html("");
+      });
+
+      // check availability of car before submit the form
+      function checkAvailability() {
+        car_id = {{car.id}};
+        console.log("car id :", car_id);
+        start_time = $("#id_pickup_datetime").val();
+        end_time = $('#id_drop_datetime').val();
+
+        $.ajax({
+          url: "{% url 'hostuser:ajax_car_availability_check' %}",
+          type: 'GET',
+          data : {
+            "car_id": car_id,
+            "start_datetime": start_time,
+            "end_datetime": end_time,
+          },
+          dataType: 'json', // added data type
+          success: function(res) {
+            console.log(res);
+            if (res["status"] == "401"){
+              $("#form-error").html(res["message"] + "<br><br>Select different dates from" + "<br>start date : " + start_time + "<br>end date : " + end_time);
+              //$('#confirmBookingForm')[0].reset();
+            }
+            else{
+              $("#form-error").html("");
+              $("#confirmBookingForm").submit();
+            }
+          }
+        });
+
+      }
+    </script>
+</body>
+</html>

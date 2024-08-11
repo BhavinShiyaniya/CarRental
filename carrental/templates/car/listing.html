@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CarRental - Rent Car and Enjoy! {% endblock %}
+
+{% block content %}
+
+<div class="hero inner-page" style="background-image: url({% static 'images/hero_1_a.jpg' %});">
+        
+    <div class="container">
+      <div class="row align-items-center pt-5">
+        <div class="col-lg-10">
+          
+          {% comment %} <div class="intro mt-5">
+            <h1><strong>Listings</strong></h1>
+            <div class="custom-breadcrumbs"><a href="index.html">Home</a> <span class="mx-2">/</span> <strong>Listings</strong></div>
+          </div> {% endcomment %}
+
+          <form class="trip-form" id="searchform" method="GET">
+            
+            <div class="row align-items-center">
+              
+              <div class="mb-3 mb-md-0 col-md-3">
+                <select name="car_type" id="car_type" class="custom-select form-control">
+                  <option value="">Select Car Type</option>
+                  <option value="SEDAN">Sedan</option>
+                  <option value="HATCHBACK">Hatchback</option>
+                  <option value="SUV">SUV</option>
+                  <option value="COUPE">Coupe</option>
+                </select>
+              </div>
+              <div class="mb-3 mb-md-0 col-md-3">
+                {% comment %} {{myFilter.form}} {% endcomment %}
+                <div class="form-control-wrap">
+                  <input type="datetime-local" id="pickup_datetime" name="pickup_datetime" placeholder="Pick up" class="form-control px-3" required>
+                  {% comment %} <span class="icon icon-date_range"></span> {% endcomment %}
+                  {% comment %} {{myFilter.form.pickup_datetime}} {% endcomment %}
+                </div>
+              </div>
+              
+              <div class="mb-3 mb-md-0 col-md-3">
+                <div class="form-control-wrap">
+                  <input type="datetime-local" id="drop_datetime" name="drop_datetime" placeholder="Drop off" class="form-control datepicker px-3" required>
+                  {% comment %} <span class="icon icon-date_range"></span> {% endcomment %}
+                  {% comment %} {{myFilter.form.drop_datetime}} {% endcomment %}
+                </div>
+              </div>
+              <div class="mb-3 mb-md-0 col-md-3">
+                {% comment %} <input type="submit" value="Search Now" class="btn btn-primary btn-block py-3"> {% endcomment %}
+                <button type="button" id="search" class="btn btn-primary btn-block py-3">Search Now</button>
+              </div>
+            </div>
+            
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  
+
+<div class="site-section bg-light" id="search_list">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <h2 class="section-heading"><strong>Car Listings</strong></h2>
+        <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>    
+      </div>
+    </div>
+
+
+
+
+    <div class="row">
+      {% if carlist %}
+      {% for car in carlist %}
+      {% if car.is_active == True %}
+      <div class="col-md-6 col-lg-4 mb-4">
+
+        <div class="listing d-block  align-items-stretch">
+          <div class="listing-img h-100 mr-4">
+            
+            <a href="{% url 'car:cardetail' pk=car.id %}"><img src="{{ car.car_image_set.all.0.car_images.url }}" alt="Image" class="img-fluid" style="height:170px;"></a>
+          </div>
+          <div class="listing-contents h-100">
+            <a href="{% url 'car:cardetail' pk=car.id %}"><h3>{{ car.brand }} {{ car.name }} {{ car.manufacture_year }}</h3></a>
+            <div class="rent-price">
+              <strong>₹ {{ car.fare }}</strong><span class="mx-1">/</span>hour
+            </div>
+            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+              <div class="listing-feature pr-4">
+                <span class="caption">Fuel:</span>
+                <span class="number">{{ car.fuel_type }}</span>
+              </div>
+              <div class="listing-feature pr-4">
+                <span class="caption">Transmission:</span>
+                <span class="number">{{ car.transmission_type }}</span>
+              </div>
+              <div class="listing-feature pr-4">
+                <span class="caption">Passenger:</span>
+                <span class="number">{{ car.seats }}</span>
+              </div>
+            </div>
+            <div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
+              <p><a href="{% url 'car:cardetail' pk=car.id %}" class="btn btn-primary btn-sm">Rent Now</a></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% else %}
+      <div class="jumbotron w-100">
+        <h1 class="text-danger text-center">Sorry, No cars available</h1>
+      </div>
+      {% endif %}
+    </div>
+
+
+
+
+
+
+    {% comment %} <div class="row">
+      <div class="col-5">
+        <div class="custom-pagination">
+          <a href="#">1</a>
+          <span>2</span>
+          <a href="#">3</a>
+          <a href="#">4</a>
+          <a href="#">5</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> {% endcomment %}
+
+
+
+
+{% endblock content %}
+
+
+<!-- Footer -->
+{% block footer %}
+{% include "footer.html" %}
+{% endblock footer %}
+
+{% block javascripts %}
+
+<script>
+
+  // start of date validations
+  // setting min date for pickupdatetime
+  var minDate = new Date().toISOString().slice(0,16);
+  console.log("minDate", minDate);
+
+  //To restrict past date
+  $('#pickup_datetime').attr('min', minDate);
+  $('#drop_datetime').attr('min', minDate);  
+  
+  // setting min date for pickupdatetime
+
+  var currentDate = new Date();
+  var nextWeekDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+  var maxDate = nextWeekDate.toISOString().slice(0, 16);
+  console.log("nextWeekDate", nextWeekDate);
+  console.log("maxDate", maxDate);
+  //To restrict future date
+  $('#pickup_datetime').attr('max', maxDate);
+  $('#drop_datetime').attr('max', maxDate); 
+
+  // end of date validations 
+
+
+  //=======================================
+  
+  // car ajax search start
+  $("#search").on("click", function(){
+    console.log("+++++++++++++++++++++++++++++++++++")
+    var pickupdatetime = document.getElementById("pickup_datetime").value;
+    console.log(pickupdatetime)
+    var dropdatetime = document.getElementById("drop_datetime").value;
+    console.log(dropdatetime)
+    var cartype = document.getElementById("car_type").value;
+    console.log(cartype)
+
+    // sessionStorage set data
+    sessionStorage.setItem("car_type", cartype);
+    sessionStorage.setItem("pickup_datetime", pickupdatetime);
+    sessionStorage.setItem("drop_datetime", dropdatetime); 
+
+    console.log("+++++++++++++++++++++++++++++++++++")
+    if(pickupdatetime >= dropdatetime) {
+      alert("Drop datetime need to be bigger then Pickup datetime");
+      return false;
+    }
+    else {
+    $.ajax({
+        type: "GET",
+        url: "{% url 'car:searchviewajax' %}",
+        data: {
+            "pickupdatetime": pickupdatetime,
+            "dropdatetime": dropdatetime,
+            "cartype": cartype,
+        },
+        success: function(data) {
+            console.log("::",data.object_list)
+            $("#search_list").html(data.object_list);
+            
+        }
+    });
+  }
+  });
+  // car ajax search end
+
+  // fill form data using sessionStorage
+  $(window).on('load', function() {
+    // sessionStorage get data
+    var car_type = sessionStorage.getItem("car_type");
+    console.log("car_type: ", car_type)
+    var pickup_datetime = sessionStorage.getItem("pickup_datetime");
+    console.log("pickup_datetime: ", pickup_datetime)
+    var drop_datetime = sessionStorage.getItem("drop_datetime");
+    console.log("drop_datetime: ", drop_datetime)
+
+    if (car_type !== null) {
+      document.getElementById("car_type").value = car_type;
+    }
+
+    if (pickup_datetime !== null) {
+      document.getElementById("pickup_datetime").value = pickup_datetime;
+    }
+
+    if (drop_datetime !== null) {
+      document.getElementById("drop_datetime").value = drop_datetime;
+    }
+  });
+
+
+</script>
+
+{% endblock javascripts %}
+

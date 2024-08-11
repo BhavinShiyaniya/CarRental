@@ -1,0 +1,706 @@
+{% extends "hostuser_base/hostuser_base.html" %}
+{% load static %}
+
+{% block title %}CarRental - Dashboard {% endblock title %}
+
+{% block content %}
+  <main id="main" class="main">
+    {% include "messages.html" %}
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active"><a href="{% url 'hostuser:dashboard' %}">Dashboard</a></li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Cars Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <a href="{% url 'hostuser:carlist' %}"><h5 class="card-title">Cars</h5></a>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <a href="{% url 'hostuser:carlist' %}"><i class="ri-car-fill"></i></a>
+                    </div>
+                    <div class="ps-3">
+                      <a href="{% url 'hostuser:carlist' %}"><h6>{{ availableusercars }} of {{ usercars.count }}</h6></a>
+                      <span class="text-danger small pt-1 fw-bold">{% if booked_cars > 0 %}<i class="fa fa-car-side me-2"></i>{{ booked_cars }} car on rent{% endif %}</span> <br>
+                      <span class="text-muted small pt-2 fw-bold">{% if holded_cars > 0 %}<i class="fa fa-pause me-2"></i>{{ holded_cars }} car on hold{% endif %}</span>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Cars Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="card-body">
+                  <a href={% url 'hostuser:revenue-compare' %}><h5 class="card-title">Total Revenue</span></h5></a>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <a href={% url 'hostuser:revenue-compare' %}><i class="bi bi-currency-dollar"></i></a>
+                    </div>
+                    <div class="ps-3">
+                      <a href={% url 'hostuser:revenue-compare' %}><h6>₹ {{ totalearning|floatformat:"0" }}</h6></a>
+                      {% comment %} <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> {% endcomment %}
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+            <!-- Bookings Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="card-body">
+                  <a href="{% url 'hostuser:hostbookinglist' %}"><h5 class="card-title">Total Bookings</span></h5></a>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <a href="{% url 'hostuser:hostbookinglist' %}"><i class="fa-solid fa-receipt text-info"></i></a>
+                    </div>
+                    <div class="ps-3">
+                      <a href="{% url 'hostuser:hostbookinglist' %}"><h6>{{ total_bookings }}</h6></a>
+                      {% if percentage_change > 0 %}
+                      <span class="text-success small pt-1 fw-bold"><i class="fa fa-arrow-up me-2" aria-hidden="true"></i>{{ percentage_change|floatformat:0 }}
+                        %</span> <span class="text-success small pt-2 ps-1">increase</span>
+                      {% else %}
+                      <span class="text-danger small pt-1 fw-bold"><i class="fa fa-arrow-down me-2" aria-hidden="true"></i>{{ percentage_change|floatformat:0 }}
+                        %</span> <span class="text-danger small pt-2 ps-1">decrease</span>
+                      {% endif %}
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Bookings Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">  
+
+                <div class="card-body">
+                  <a href="{% url 'hostuser:customerslist' %}"><h5 class="card-title">Total Customers</h5></a>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <a href="{% url 'hostuser:customerslist' %}"><i class="bi bi-people"></i></a>
+                    </div>
+                    <div class="ps-3">
+                      <a href="{% url 'hostuser:customerslist' %}"><h6>{{ totalcustomer }}</h6></a>
+                      {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Repeat Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">  
+
+                <div class="card-body">
+                  <a href="{% url 'hostuser:customerslist' %}"><h5 class="card-title">Repeat Customers</h5></a>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <a href="{% url 'hostuser:customerslist' %}"><i class="bi bi-people"></i></a>
+                    </div>
+                    <div class="ps-3">
+                      <a href="{% url 'hostuser:customerslist' %}"><h6>{{ repeat_customers_ratio|floatformat:"0" }} %</h6></a>
+                      {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Repeat Customers Card -->
+
+            <!-- Ner Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">  
+
+                <div class="card-body">
+                  <a href="{% url 'hostuser:customerslist' %}"><h5 class="card-title">Customers <span>| This Month</span></h5></a>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <a href="{% url 'hostuser:customerslist' %}"><i class="bi bi-people"></i></a>
+                    </div>
+                    <div class="ps-3">
+                      <a href="{% url 'hostuser:customerslist' %}"><h6>{{ new_customers_month }}</h6></a>
+                      {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End New Customers Card -->
+
+            <!-- Cars List -->
+            <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="btn btn-sm btn-primary me-3" href="{% url 'hostuser:carlist' %}">View all</a>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Top Performing Cars</h5>
+    
+                  <!-- Table with hoverable rows -->
+                  <table class="table table-hover carListTable">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Fuel Type</th>
+                        <th scope="col">Registration No</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if top_cars_list %}
+                      {% for car in top_cars_list %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{car.brand}} {{car.name}}</td>
+                        <td>{{car.fuel_type}}</td>
+                        <td>{{car.registration_no}}</td>
+                        <td>
+                          {% if car.is_available == True and car.is_active == True %}
+                            <span class="badge bg-success">Available</span>
+                          {% elif car.is_active == False %}
+                          <span class="badge bg-warning">On Hold</span>
+                          {% else %}
+                          <span class="badge bg-danger">Booked</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          <div class="row">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                              <a href="{% url 'hostuser:hostcardetail' pk=car.id %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="View"><i class="fas fa-arrow-alt-circle-right"></i></a>
+                              <a href="{% url 'hostuser:carupdate' pk=car.id %}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Update"><i class="fa fa-edit"></i></a>
+                              <button type="button" id="confirmdeletebtn"
+                              {% comment %} class="btn btn-danger me-md-2" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="fa fa-trash"></i></button> {% endcomment %}
+                              <label data-url="{% url 'hostuser:cardelete' pk=car.id %}" data-title="{car.id}" title="Delete" href="{% url 'hostuser:cardelete' pk=car.id %}" class="btn btn-danger confirmdeletebtn" data-id="{car.id}"><i class="fa fa-trash"></i></label>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      {% else %}
+                      <tr>
+                        <th scope="row"></th>
+                        <td></td>
+                        <td><h3 class="text-danger">No Cars Available!</h3></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                  <!-- End Table with hoverable rows -->
+    
+                </div>
+              </div>
+            </div><!-- End Cars List -->
+
+            <!-- Recent Bookings -->
+            <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="btn btn-sm btn-primary me-3" href="{% url 'hostuser:hostbookinglist' %}">View all</a>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Bookings</h5>
+    
+                  <!-- Table with hoverable rows -->
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Car</th>
+                        <th scope="col">Pickup Date Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if bookinglist %}
+                      {% for booking in bookinglist|slice:"5" %}
+                      <tr>
+                          <th scope="row">{{ forloop.counter }}</th>
+                          <td>{{ booking.user }}</th>
+                          <td>{{ booking.car.brand }} {{ booking.car.name }}</td>
+                          <td>{{ booking.pickup_datetime }}</td>
+                          <td>
+                              {% if booking.booking_status == "CONFIRMED" %}
+                              <span class="badge bg-primary">{{ booking.booking_status }}</span>
+                              {% elif booking.booking_status == "PICKEDUP" %}
+                              <span class="badge bg-warning">{{ booking.booking_status }}</span>
+                              {% elif booking.booking_status == "DROPPED" %}
+                              <span class="badge bg-success">{{ booking.booking_status }}</span>
+                              {% elif booking.booking_status == "CANCELLED" %}
+                              <span class="badge bg-danger">{{ booking.booking_status }}</span>
+                              {% endif %}
+                          </td>
+                          <td>
+                              <div class="row">
+                              <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                  <a href="{% url 'hostuser:hostbookingdetail' pk=booking.id %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="View"><i class="fas fa-arrow-alt-circle-right"></i></a>
+  
+                                  <a href="{% url 'hostuser:hostbookingupdate' pk=booking.id %}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Update"><i class="fa fa-edit"></i></a>
+  
+                              </div>
+                              </div>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                      {% else %}
+                      <tr>
+                          <th scope="row"></th>
+                          <td></td>
+                          <td><h3 class="text-danger">No Bookings Available!</h3></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      {% endif %}
+                  </tbody>
+                  </table>
+                  <!-- End Table with hoverable rows -->
+    
+                </div>
+              </div>
+            </div><!-- End Recent Bookings -->
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+          <!-- Earning Report -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><button type="button" class="dropdown-item" id="thisMonthBtn">This Month</button></li>
+                <li><button type="button" class="dropdown-item" id="threeMonthBtn">Three Month</button></li>
+                <li><button type="button" class="dropdown-item" id="customBtn">Custom</button></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">Earning Report<span id="chartTitle"> | Total Revenue</span></h5>
+              <!--custom revenue form start-->
+              <form class="row g-3 mb-3" id="customeChartForm" method="GET" hidden>
+                <div class="col-md-5">
+                  <div class="col-md-12">
+                    <div class="form-floating">
+                      {% comment %} {{myFilter.form.start_date}} {% endcomment %}
+                      <input type="date" class="form-control" name="start_date" id="start_date" value="" placeholder="Start Date">
+                      <label for="start_date">Start Date</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="col-md-12">
+                    <div class="form-floating">
+                      {% comment %} {{myFilter.form.end_date}} {% endcomment %}
+                      <input type="date" class="form-control" name="end_date" id="end_date" value="" placeholder="End Date">
+                      <label for="end_date">End Date</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="col-md-12 text-center d-grid gap-2 mt-2">
+                    <button type="button" id="search" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                  
+              </form>
+              <!--custom revenue form end-->
+
+              <div id="earningChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+              // default chart data start
+                document.addEventListener("DOMContentLoaded", () => {
+                  echarts.init(document.querySelector("#earningChart")).setOption({
+                    tooltip: {
+                      trigger: 'item'
+                    },
+                    legend: {
+                      top: '5%',
+                      left: 'center'
+                    },
+                    series: [{
+                      //name: 'Access From',
+                      type: 'pie',
+                      radius: ['40%', '70%'],
+                      avoidLabelOverlap: false,
+                      label: {
+                        show: false,
+                        position: 'center'
+                      },
+                      emphasis: {
+                        label: {
+                          show: true,
+                          fontSize: '12',
+                          fontWeight: 'bold'
+                        }
+                      },
+                      labelLine: {
+                        show: false
+                      },
+                      data: [
+                        {
+                          value: {{ net_earning }},
+                          name: 'Net Profit',
+                          itemStyle: {color: "#91cc75"},
+                        },
+                        {
+                          value: {{ net_commision }},
+                          name: 'Commision Deducted',
+                          itemStyle: {color: "#ee6666"},
+                        },
+                      ]
+                    }]
+                  });
+                });
+              // default chart data end
+              </script>
+
+            </div>
+          </div><!-- End Earning Report -->
+
+
+          <textarea id="note" cols="30" rows="10"></textarea>
+
+
+        </div><!-- End Right side columns -->
+
+      </div>
+    </section>
+
+    <!--  Confirm Delete Modal -->
+    {% comment %} {% include "hostuser/confirm_delete_modal.html" %} {% endcomment %}
+    
+  </main><!-- End #main -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+<script>
+// custom revenue chart ajax search start
+  $("#customBtn").on("click", function() {
+    $('#customeChartForm').removeAttr('hidden');
+    $('#chartTitle').text(" | Custom");
+  });
+
+
+  $("#search").on("click", function(){
+    console.log("+++++++++++++++++++++++++++++++++++")
+    var start_date = document.getElementById("start_date").value;
+    console.log(start_date)
+    var end_date = document.getElementById("end_date").value;
+    console.log(end_date)
+
+    console.log("+++++++++++++++++++++++++++++++++++")
+
+    if(start_date >= end_date) {
+      alert("End Date need to be bigger then Start Date");
+      return false;
+    }
+    else {
+      $.ajax({
+        type: "GET",
+        url: "{% url 'hostuser:revenue-chart-ajax' %}",
+        data: {
+            "start_date": start_date,
+            "end_date": end_date,
+        },
+        success: function(data) {
+          console.log("::",data)
+          console.log("totalearning::",data.totalearning)
+          console.log("net_commision::",data.net_commision)
+          console.log("net_earning::",data.net_earning)
+
+          //$('#chartTitle').text(" | Custom");
+          
+            echarts.init(document.querySelector("#earningChart")).setOption({
+              tooltip: {
+                trigger: 'item'
+              },
+              legend: {
+                top: '5%',
+                left: 'center'
+              },
+              series: [{
+                //name: 'Access From',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                  show: false,
+                  position: 'center'
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    fontSize: '12',
+                    fontWeight: 'bold'
+                  }
+                },
+                labelLine: {
+                  show: false
+                },
+                data: [
+                  {
+                    value: data.net_earning,
+                    name: 'Net Profit',
+                    itemStyle: {color: "#91cc75"},
+                  },
+                  {
+                    value: data.net_commision,
+                    name: 'Commision Deducted',
+                    itemStyle: {color: "#ee6666"},
+                  },
+                ]
+              }]
+            });
+          
+        }
+    });
+  }
+  });
+// custom revenue chart ajax search end
+</script>
+
+<script>
+  // this month revenue chart ajax search start
+  
+    $("#thisMonthBtn").on("click", function(){
+      console.log("+++++++++++++++++++++++++++++++++++")
+  
+      $.ajax({
+          type: "GET",
+          url: "{% url 'hostuser:revenue-chart-ajax' %}",
+          data: {
+              "this_month": "this_month",
+          },
+          success: function(data) {
+            console.log("::",data)
+            console.log("totalearning::",data.totalearning)
+            console.log("net_commision::",data.net_commision)
+            console.log("net_earning::",data.net_earning)
+
+            $("#customeChartForm").attr("hidden",true);
+            $('#chartTitle').text(" | This Month");
+
+              echarts.init(document.querySelector("#earningChart")).setOption({
+                tooltip: {
+                  trigger: 'item'
+                },
+                legend: {
+                  top: '5%',
+                  left: 'center'
+                },
+                series: [{
+                  //name: 'Access From',
+                  type: 'pie',
+                  radius: ['40%', '70%'],
+                  avoidLabelOverlap: false,
+                  label: {
+                    show: false,
+                    position: 'center'
+                  },
+                  emphasis: {
+                    label: {
+                      show: true,
+                      fontSize: '12',
+                      fontWeight: 'bold'
+                    }
+                  },
+                  labelLine: {
+                    show: false
+                  },
+                  data: [
+                    {
+                      value: data.net_earning,
+                      name: 'Net Profit',
+                      itemStyle: {color: "#91cc75"},
+                    },
+                    {
+                      value: data.net_commision,
+                      name: 'Commision Deducted',
+                      itemStyle: {color: "#ee6666"},
+                    },
+                  ]
+                }]
+              });
+            
+          }
+      })
+    });
+  
+  // this month revenue chart ajax search end
+  </script>
+
+<script>
+// three month revenue chart ajax search start
+
+  $("#threeMonthBtn").on("click", function(){
+    console.log("+++++++++++++++++++++++++++++++++++")
+
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'hostuser:revenue-chart-ajax' %}",
+        data: {
+            "three_month": "three_month",
+        },
+        success: function(data) {
+          console.log("::",data)
+          console.log("totalearning::",data.totalearning)
+          console.log("net_commision::",data.net_commision)
+          console.log("net_earning::",data.net_earning)
+          
+          $("#customeChartForm").attr("hidden",true);
+          $('#chartTitle').text(" | Three Month");
+          
+            echarts.init(document.querySelector("#earningChart")).setOption({
+              tooltip: {
+                trigger: 'item'
+              },
+              legend: {
+                top: '5%',
+                left: 'center'
+              },
+              series: [{
+                //name: 'Access From',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                  show: false,
+                  position: 'center'
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    fontSize: '12',
+                    fontWeight: 'bold'
+                  }
+                },
+                labelLine: {
+                  show: false
+                },
+                data: [
+                  {
+                    value: data.net_earning,
+                    name: 'Net Profit',
+                    itemStyle: {color: "#91cc75"},
+                  },
+                  {
+                    value: data.net_commision,
+                    name: 'Commision Deducted',
+                    itemStyle: {color: "#ee6666"},
+                  },
+                ]
+              }]
+            });
+          
+        }
+    })
+  });
+
+// three month revenue chart ajax search end
+</script>
+
+<script>
+// confirm delete sweetalert start
+
+  $(document).on('click', '.confirmdeletebtn', function (e) {
+    var id = $(this).data("id")
+    console.log(id)
+    var url = $(this).data("url")
+    console.log(url)
+    //var delete_ele = $(this)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: url,
+
+                data: {
+                    "id": id ,
+                    "csrfmiddlewaretoken": '{{ csrf_token }}'
+                },
+                success: function (data) {
+                  //delete_ele.parent().parent().remove(); 
+                  $(".carListTable").load(location.href + " .carListTable");
+                }
+            });
+        }
+    })
+  });
+
+// confirm delete sweetalert end
+</script>
+
+
+
+{% endblock javascripts %}

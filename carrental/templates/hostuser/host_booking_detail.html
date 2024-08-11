@@ -1,0 +1,345 @@
+{% extends "hostuser_base/hostuser_base.html" %}
+{% load static %}
+
+{% block stylesheet %}
+  <style>
+
+    #progressbar {
+      margin-bottom: 3vh;
+      overflow: hidden;
+      color: rgb(252, 103, 49);
+      padding-left: 0px;
+      margin-top: 3vh;
+    }
+  
+    #progressbar li {
+      list-style-type: none;
+      font-size: medium;
+      width: 25%;
+      float: left;
+      position: relative;
+      font-weight: 400;
+      color: rgb(160, 159, 159);
+    }
+    
+    #progressbar #step1:before {
+      content: "";
+      color: rgb(252, 103, 49);
+      width: 5px;
+      height: 5px;
+      margin-left: 0px !important;
+      /* padding-left: 11px !important */
+    }
+    
+    #progressbar #step2:before {
+      content: "";
+      color: #fff;
+      width: 5px;
+      height: 5px;
+      margin-left: 32%;
+    }
+    
+    #progressbar #step3:before {
+      content: "";
+      color: #fff;
+      width: 5px;
+      height: 5px;
+      margin-right: 32% ; 
+      /* padding-right: 11px !important */
+    }
+    
+    #progressbar #step4:before {
+      content: "";
+      color: #fff;
+      width: 5px;
+      height: 5px;
+      margin-right: 0px !important;
+      /* padding-right: 11px !important */
+    }
+    
+    #progressbar li:before {
+      line-height: 29px;
+      display: block;
+      font-size: 12px;
+      background: #ddd;
+      border-radius: 50%;
+      margin: auto;
+      z-index: -1;
+      margin-bottom: 1vh;
+    }
+    
+    #progressbar li:after {
+      content: '';
+      height: 2px;
+      background: #ddd;
+      position: absolute;
+      left: 0%;
+      right: 0%;
+      margin-bottom: 2vh;
+      top: 1px;
+      z-index: 1;
+    }
+    .progress-track{
+      padding: 0 8%;
+    }
+    #progressbar li:nth-child(2):after {
+      margin-right: auto;
+    }
+    
+    #progressbar li:nth-child(1):after {
+      margin: auto;
+    }
+    
+    #progressbar li:nth-child(3):after {
+      float: left;
+      width: 68%;
+    }
+    #progressbar li:nth-child(4):after {
+      margin-left: auto;
+      width: 132%;
+    }
+    
+    #progressbar  li.active{
+      color: black;
+    }
+    
+    #progressbar li.active:before,
+    #progressbar li.active:after {
+      background: rgb(252, 103, 49);
+    }
+
+    #progressbar li:nth-child(4).active:before,
+    #progressbar li:nth-child(4).active:after {
+      background: rgb(252,9, 49);
+    }
+  </style>
+{% endblock %}
+
+{% block title %}CarRental - Booking Detail {% endblock title %}
+
+{% block content %}
+  <main id="main" class="main">
+    {% include "messages.html" %}
+
+    <div class="pagetitle">
+      <h1>Booking Detail</h1>
+
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'hostuser:dashboard' %}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'hostuser:hostbookinglist' %}">Booking List</a></li>
+          <li class="breadcrumb-item active"><a href="{% url 'hostuser:hostbookingdetail' pk=booking.id %}">Booking Detail</a></li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="h-100 gradient-custom">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-10 col-xl-8">
+              <div class="card" style="border-radius: 10px;">
+                <div class="card-header px-4 py-5 d-flex justify-content-between align-items-center">
+                  <h5 class="text-muted mb-0">Booking by, <span class="text-primary">{{ booking.user }} </span>!</h5>
+                    <!-- Update Button Start -->  
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                      {% comment %} <a href="{% url 'hostuser:hostbookingupdate' pk=booking.id %}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Update"><i class="fa fa-edit"></i></a> {% endcomment %}
+                      
+                      {% if booking.booking_status != "DROPPED" %}
+                      <form class="row g-3" action="{% url 'hostuser:hostbookingupdate' pk=booking.id %}" method="POST" id="statusUpdateForm">
+                          {% csrf_token %}
+                          {{ form.car }}
+                          {{ form.pickup_datetime }}
+                          {{ form.drop_datetime }}
+                          {{ form.total_hours }}
+                          {{ form.total_fare }}
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="col-md-12">
+                                <div class="form-floating">
+                                    {{ form.booking_status }}
+                                  {% comment %} <input type="text" class="form-control" id="floatingName" placeholder="KM Driven"> {% endcomment %}
+                                  <label for="floatingCity">Booking Status</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                              <div class="col-md-12">
+                                <div class="form-floating">
+                                    {{ form.payment_status }}
+                                  {% comment %} <input type="text" class="form-control" id="floatingZip" placeholder="Fare"> {% endcomment %}
+                                  <label for="floatingZip">Payment Status</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="text-center d-grid gap-2">
+                            <input type="submit" class="btn btn-primary" value="Update" />
+                          </div>
+                          {% comment %} <button type="submit" id="updateBtn" class="btn btn-primary hidden">Update</button> {% endcomment %}
+                        </form>
+                        {% endif %}
+                    </div><!-- Update Button End -->
+                </div>
+                <div class="card-body p-4">
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="lead fw-normal mb-0 text-secondary">Receipt</p>
+                    {% comment %} <p class="text-danger mb-0 ms-5">* You have to show OTP to car owner at a time of pickup. (OTP has been sent on your registered email.) </p> {% endcomment %}
+                  </div>
+                  <div class="card shadow-0 border mb-4">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-2 mt-3">
+                            <a href="{% url 'hostuser:hostcardetail' pk=booking.car.id %}"><img src="{{ booking.car.car_image_set.all.0.car_images.url }}"
+                                class="img-fluid" alt="Car Image"></a>
+                        </div>
+                        <div class="col-md-4 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0">{{ booking.car.brand }} {{ booking.car.name }} {{ booking.car.manufacture_year }}</p>
+                        </div>
+                        <div class="col-md-3 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0">{{ booking.car.registration_no }}</p>
+                        </div>
+                        <div class="col-md-3 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0">₹ {{ booking.car.fare }} / hour</p>
+                        </div>
+                      </div>
+
+                      <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                          <p class="mb-0">Pickup Date : </p>
+                        </div>
+                        <div class="col-md-9">
+                          <p class="text-muted mb-0">{{ booking.pickup_datetime }}</p>
+                        </div>
+                      </div>
+
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                          <p class="mb-0">Estimate Drop Date : </p>
+                        </div>
+                        <div class="col-md-9">
+                          <p class="text-muted mb-0">{{ booking.drop_datetime }}</p>
+                        </div>
+                      </div>
+
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                          <p class="mb-0">Registration No : </p>
+                        </div>
+                        <div class="col-md-9">
+                          <p class="text-muted mb-0">{{ booking.car.registration_no }}</p>
+                        </div>
+                      </div>
+
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                          <p class="mb-0">Owner : </p>
+                        </div>
+                        <div class="col-md-9">
+                          <p class="text-muted mb-0">{{ booking.car.owner }}</p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-3">
+                          <p class="mb-0">Pickup Address : </p>
+                        </div>
+                        <div class="col-md-9">
+                          <p class="text-muted mb-0">{{ booking.car.pickup_address }}, {{ booking.car.pickup_city }}, {{ booking.car.pickup_state }}, {{ booking.car.pickup_country }} - {{ booking.car.pickup_pincode }} </p>
+                        </div>
+                      </div>
+
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                          <p class="mb-0">Fuel : </p>
+                        </div>
+                        <div class="col-md-9">
+                          <p class="text-muted mb-0">{{ booking.car.fuel_type }}</p>
+                        </div>
+                      </div>
+
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                          <p class="mb-0">Transmission : </p>
+                        </div>
+                        <div class="col-md-9">
+                          <p class="text-muted mb-0">{{ booking.car.transmission_type }}</p>
+                        </div>
+                      </div>
+
+                      <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+
+
+                      <div class="row d-flex align-items-center">
+                        <div class="tracking col-3">
+                          <div class="title">Tracking Order</div>
+                      </div>
+                      <div class="progress-track col-9">
+                          <ul id="progressbar">
+                              <li class="step0 {% if booking.booking_status == "CONFIRMED" or booking.booking_status == "PICKEDUP" or booking.booking_status == "DROPPED" %}active{% endif %}" id="step1">Confirmed</li>
+                              <li class="step0 text-center {% if booking.booking_status == "PICKEDUP" or booking.booking_status == "DROPPED" %}active{% endif %}" id="step2">Pickedup</li>
+                              <li class="step0 text-right {% if booking.booking_status == "DROPPED" %}active{% endif %}" id="step3">Dropped</li>
+                              <li class="step0 text-right {% if booking.booking_status == "CANCELLED" %}active{% endif %}" id="step4">Cancelled</li>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="d-flex justify-content-between pt-2 ps-2 pe-2">
+                    <p class="fw-bold mb-0">Order Details</p>
+                    {% comment %} <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> $19.00</p> {% endcomment %}
+                  </div>
+      
+                  <div class="d-flex justify-content-between pt-2 ps-2 pe-2">
+                    <p class="text-muted mb-0"><span class="fw-bold me-4 text-dark">Order ID : </span>{{ booking.id }}</p>
+                    <p class="text-muted mb-0"><span class="fw-bold me-4 text-dark">Estimate Hours : </span> {{ booking.total_hours }} hours</p>
+                  </div>
+      
+                  <div class="d-flex justify-content-between ps-2 pe-2">
+                    <p class="text-muted mb-0"><span class="fw-bold me-4 text-dark">Invoice Date : </span>{{ booking.pickup_datetime }}</p>
+                    <p class="text-muted mb-0"><span class="fw-bold me-4 text-dark">Estimate Total : </span>₹ {{ booking.total_fare|floatformat:"0" }}</p>
+                  </div>
+      
+                  <div class="row d-flex justify-content-between mb-5 ps-2 pe-2">
+                    <p class="col-5 text-dark mb-0"><span class="fw-bold me-4 text-dark">Payment Status : </span><span class="badge text-grey {% if booking.payment_status == "COMPLETED" %}bg-success{% elif booking.payment_status == "PENDING" %}bg-warning{% elif booking.payment_status == "REFUNDED" %}bg-info{% elif booking.payment_status == "CANCELLED" %}bg-danger{% endif %}">{{ booking.payment_status }}</span></p>
+                    <p class="col-7 text-muted mb-0"><span class="fw-bold me-4 text-danger">* Total Payment at the time of drop time may change.Which depends upon how much late you drop a car.</span></p>
+                  </div>
+                </div>
+                <div class="card-footer border-0 px-4 py-5"
+                  style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                  <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Estimate Total
+                    paid : <span class="h2 mb-0 ms-2"> ₹  {{ booking.total_fare|floatformat:"0" }}</span></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+    
+    <!--  Confirm Delete Modal -->
+    {% comment %} {% include "hostuser/confirm_delete_modal.html" %} {% endcomment %}
+
+  </main><!-- End #main -->
+
+{% endblock content %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    {% comment %} <script>
+      $(document).on('ready', function() {
+        console.log(":::::::::::::::::");
+        $("#id_car").val("{{ booking.car.id }}");
+        $("#id_pickup_datetime").val("{{ booking.pickup_datetime }}");
+        $("#id_drop_datetime").val("{{ booking.drop_datetime }}");
+        $("#id_total_hours").val("{{ booking.total_hours }}");
+        $("#id_total_fare").val("{{ booking.total_fare }}");
+        $("#id_booking_status").val("{{ booking.booking_status }}");
+        $("#id_payment_status").val("{{ booking.payment_status }}");
+      });
+    </script> {% endcomment %}
+{% endblock javascripts %}

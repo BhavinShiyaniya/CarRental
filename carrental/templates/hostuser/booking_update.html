@@ -1,0 +1,134 @@
+{% extends "hostuser_base/hostuser_base.html" %}
+{% load static %}
+
+{% block title %}CarRental - Update Booking {% endblock title %}
+
+{% block content %}
+
+<main id="main" class="main">
+  {% include "messages.html" %}
+  
+    <div class="pagetitle">
+      <h1>Update Booking</h1>
+      <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'hostuser:dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'hostuser:hostbookinglist' %}">Booking List</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'hostuser:hostbookingdetail' pk=booking.id %}">Booking Detail</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'hostuser:hostbookingupdate' pk=booking.id %}">Update Booking</a></li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+      <div class="row">
+
+        <!-- Dummy Col Start -->
+        <div class="col-lg-2"></div>
+        <!-- Dummy Col End -->
+
+        <!-- Booking Update Col Start -->
+        <div class="col-lg-8">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Update Booking</h5>
+                
+                <!-- Booking Update Form -->
+                <form class="row g-3" method="POST">
+                  {% csrf_token %}
+                  
+                  <div class="col-md-6">
+                    <div class="col-md-12">
+                      <div class="form-floating">
+                        {{ form.car }}
+                        {% comment %} <input type="text" class="form-control" value="{{ booking.car }} {{ booking.car.manufacture_year }}" readonly id="floatingCity" placeholder="Brand"> {% endcomment %}
+                            <label for="floatingCity">Car</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-12">
+                          <div class="form-floating">
+                            <input type="text" class="form-control" value="{{ booking.user }}" readonly id="floatingName" placeholder="Name">
+                            <label for="floatingCity">User</label>
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                      <div class="col-md-12">
+                        <div class="form-floating">
+                          {{ form.pickup_datetime }}
+                          {% comment %} <input type="text" class="form-control" id="floatingCity" placeholder="Transmission Type"> {% endcomment %}
+                          <label for="floatingCity">Pickup Date & Time</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                          {{ form.drop_datetime }}
+                          {% comment %} <input type="text" class="form-control" id="floatingZip" placeholder="Fuel Type"> {% endcomment %}
+                          <label for="floatingZip">Drop Date & Time</label>
+                        </div>
+                      </div>
+                    
+                      
+                      <div class="col-md-6">
+                        <div class="col-md-12">
+                          <div class="form-floating">
+                            {{ form.total_hours }}
+                            {% comment %} <input type="text" class="form-control" value="{{ booking.car }}" readonly id="floatingCity" placeholder="Brand"> {% endcomment %}
+                            <label for="floatingCity">Total Hours</label>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="col-md-12">
+                        <div class="form-floating">
+                          {{ form.total_fare }}
+                          {% comment %} <input type="text" class="form-control" value="{{ booking.user }}" readonly id="floatingName" placeholder="Name"> {% endcomment %}
+                          <label for="floatingCity">Total Fare</label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                      <div class="col-md-12">
+                            <div class="form-floating">
+                                {{ form.booking_status }}
+                                {% comment %} <input type="text" class="form-control" id="floatingName" placeholder="KM Driven"> {% endcomment %}
+                              <label for="floatingCity">Booking Status</label>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                          {{ form.payment_status }}
+                          {% comment %} <input type="text" class="form-control" id="floatingZip" placeholder="Fare"> {% endcomment %}
+                          <label for="floatingZip">Payment Status</label>
+                        </div>
+                      </div>
+                      
+                      
+                      <div class="text-center d-grid gap-2 mt-5">
+                        <input type="submit" class="btn btn-primary" value="Update" />
+                        {% comment %} <button type="reset" class="btn btn-secondary">Reset</button> {% endcomment %}
+                      </div>
+                    </form><!-- End Booking Update Form -->
+                    
+                  </div>
+                </div>
+
+              </div>
+        <!-- Booking Update Col End -->
+
+        <!-- Dummy Col Start -->
+        <div class="col-lg-2"></div>
+        <!-- Dummy Col End -->
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+{% endblock content %}

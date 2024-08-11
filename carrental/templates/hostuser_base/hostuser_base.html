@@ -1,0 +1,132 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    {% block stylesheet %}{% endblock stylesheet %}
+    
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- ======= Header ======= -->
+    {% include "hostuser_base/hostuser_navbar.html" %}
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    {% include "hostuser_base/hostuser_sidebar.html" %}
+    <!-- End Sidebar -->
+
+    <!-- ======= content ======= -->
+
+
+    {% block content %}
+    
+
+    {% endblock content %}
+    <!-- End content -->
+
+    <!-- ======= Footer ======= -->
+    {% comment %} {% include "hostuser_base/hostuser_footer.html" %} {% endcomment %}
+    <!-- End Footer -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    
+    
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/chart.js/chart.umd.js' %}"></script>
+    <script src="{% static 'assets/vendor/echarts/echarts.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/quill/quill.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/simple-datatables/simple-datatables.js' %}"></script>
+    <script src="{% static 'assets/vendor/tinymce/tinymce.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+    
+    <!-- Jquery Cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Sweet Alert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    <!-- Js for Notification Websocket connection -->
+    <script>
+        const notificationSocket = new WebSocket(
+          'ws://'
+          + window.location.host
+          + '/ws/notification/'
+        );
+      
+        notificationSocket.onmessage = function(e) {
+          const data = JSON.parse(e.data);
+          console.log(data.message);
+          //document.querySelector("#note").innerHTML += (data.message + '\n');
+          $("#noti-div").load(" #noti-div > *");
+        }
+      
+        notificationSocket.onclose = function(e) {
+          console.error("Notification Socket closed unexpectedly");
+        }
+      
+    </script>
+
+    <!-- Js for Change notification is_read status -->
+    <script>
+  
+        function notificationRead(id){
+
+            message_id = id;
+            console.log("message id :", message_id);
+
+            $.ajax({
+            url: "{% url 'hostuser:notification_read_status' %}",
+            type: 'GET',
+            data : {
+                "message_id": message_id,
+            },
+            success: function(res) {
+                $("#noti-div").load(" #noti-div > *");
+            }
+            });
+        
+        }
+
+    </script>
+    
+    <!-- Specific JS goes HERE --> 
+    {% block javascripts %}{% endblock javascripts %}
+
+</body>
+</html>

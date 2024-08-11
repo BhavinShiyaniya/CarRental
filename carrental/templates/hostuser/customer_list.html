@@ -1,0 +1,118 @@
+{% extends "hostuser_base/hostuser_base.html" %}
+{% load static %}
+
+{% block title %}CarRental - Customers List {% endblock title %}
+
+{% block content %}
+
+<main id="main" class="main">
+  {% include "messages.html" %}
+
+    <div class="pagetitle">
+      <h1>Customers List</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'hostuser:dashboard' %}">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="{% url 'hostuser:customerslist' %}">Customers List</a></li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Customers List</h5>
+              <!-- Table with stripped rows -->
+              <table class="table table-hover text-center" id="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% comment %} {% if customerlist %}
+                    {% for customer in customerlist %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{customer.user__first_name}} {{customer.user__last_name}}</td>
+                      <td>{{customer.user__email}}</td>
+                      <td>{{customer.user__contact}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <th scope="row"></th>
+                        <td></td>
+                        <td><h3 class="text-danger">No Customers Available!</h3></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    {% endif %} {% endcomment %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap4.min.js"></script>
+<script>
+  $('#table').DataTable({
+    columnDefs: [{
+        orderable: true,
+        targets: -1
+    }, ],
+
+    // Ajax for pagination
+    processing: true,
+    serverSide: true,
+    //pageLength: 4,
+    
+    language: {                
+      "infoFiltered": ""
+    },
+    ajax: {
+        url: '{% url 'hostuser:customers-list-ajax' %}',
+        type: 'get',
+        dataFilter: function(data){
+          var json = jQuery.parseJSON( data );
+          json.recordsFiltered = json.recordsFiltered;
+          return JSON.stringify( json ); // return JSON string
+      }
+    },
+    columns: [
+        // data: json key from prepare_results, name: model field name
+        { data: 'id', name: 'id'},
+        { data: 'name', name: 'name' },
+        { data: 'email', name: 'email' },
+        { data: 'contact', name: 'contact' }
+    ],
+    rowCallback: function(nRow, aData, iDisplayIndex) {
+      var oSettings = this.fnSettings();
+      $("td:first", nRow).html(oSettings._iDisplayStart + iDisplayIndex + 1);
+      return nRow;
+  },
+
+});
+</script>
+
+{% endblock javascripts %}

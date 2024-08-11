@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static '/fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static '/css/jquery.fancybox.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static '/fonts/flaticon/font/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static '/css/aos.css' %}">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+
+    {% block stylesheet %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="site-wrap" id="home-section">
+
+        <!-- Navbar -->
+        {% include "navbar.html" %}
+
+        
+        {% block content %}{% endblock content %}
+
+        <!-- Footer -->
+        {% block footer %}{% endblock footer %}
+
+    </div>
+
+    
+    <script src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static '/js/popper.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static '/js/jquery.sticky.js' %}"></script>
+    <script src="{% static '/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static '/js/jquery.animateNumber.min.js' %}"></script>
+    <script src="{% static '/js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static '/js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static '/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static '/js/aos.js' %}"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <!-- Slick Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Font Awesome Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Sweet Alert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="{% static '/js/main.js' %}"></script>
+
+    <!-- Specific JS goes HERE --> 
+    {% block javascripts %}{% endblock javascripts %}
+    
+</body>
+</html>

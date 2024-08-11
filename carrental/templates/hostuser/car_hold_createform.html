@@ -1,0 +1,195 @@
+{% load static %}
+
+<!-- Start CarHold Modal -->
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Car Hold</h5>
+          <button type="button" class="btn-close closebtn" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">Car Hold Time</h5>
+                    
+                <!-- Car Hold Form  -->
+                <form class="row g-3" action="{% url 'hostuser:carhold'  %}" method="POST" id="hold-car-form">
+                    {% csrf_token %}
+
+                    {% for error in form.non_field_errors %}
+                      {{error}}
+                    {% endfor %} 
+
+                    
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                          {{ form.car }}
+                          {% comment %} <input type="text" class="form-control" id="id_car" value={{car.id}} readonly> {% endcomment %}
+                          
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                          {{ form.start_datetime }}
+                          {% comment %} <input type="text" class="form-control" id="floatingCity" placeholder="Brand"> {% endcomment %}
+                          <label for="id_start_datetime">Start Date</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                          {{ form.end_datetime }}
+                          {% comment %} <input type="text" class="form-control" id="floatingCity" placeholder="Brand"> {% endcomment %}
+                          <label for="id_end_datetime">End Date</label>
+                        </div>
+                    </div>
+
+                    <div id="form-error" class="text-danger"></div>
+                    {% comment %} <div class="text-center d-grid gap-2 mt-5"> {% endcomment %}
+                      {% comment %} <input type="submit" class="btn btn-primary" value="Submit" /> {% endcomment %}
+                      {% comment %} <button type="reset" class="btn btn-secondary">Reset</button> {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+                  
+    
+                </div>
+            </div>
+            <input type="text" value="{{car.id}}" hidden id="car_id">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closebtn" data-bs-dismiss="modal">Close</button>
+          
+            <button class="btn btn-primary check_car_availablity" id="submit-form-popup" type="submit">Submit</button>
+          </form><!-- End Car Hold Form -->
+        </div>
+      </div>
+    </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+
+
+
+    // start of date validations
+      // setting min date for pickupdatetime
+      var minDate = new Date().toISOString().slice(0,16);
+      console.log("minDate", minDate);
+    
+      //To restrict past date
+      $('#id_start_datetime').attr('min', minDate);
+      $('#id_end_datetime').attr('min', minDate);  
+      
+      // setting min date for pickupdatetime
+
+      var currentDate = new Date();
+      var nextWeekDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+      var maxDate = nextWeekDate.toISOString().slice(0, 16);
+      console.log("nextWeekDate", nextWeekDate);
+      console.log("maxDate", maxDate);
+      //To restrict future date
+      $('#id_start_datetime').attr('max', maxDate);
+      $('#id_end_datetime').attr('max', maxDate);  
+
+      // end of date validations
+</script>
+
+
+<script>
+  $('.closebtn').on('click', function () {
+    $('#hold-car-form')[0].reset();
+    $("#form-error").html("");
+  });
+
+
+  $(document).ready(function() {
+    console.log(":::::::;;;;");
+    $("#id_car").val($("#car_id").val())
+    $("#id_end_datetime").on('change', function(){
+      console.log("::::::::::", $(this).val());
+      car_id = $("#car_id").val();
+      console.log("car id :", car_id);
+      start_time = $("#id_start_datetime").val();
+      end_time = $(this).val();
+
+      $("#submit-form-popup").attr("disabled","true")
+      $.ajax({
+        url: "{% url 'hostuser:ajax_car_availability_check' %}",
+        type: 'GET',
+        data : {
+          "car_id": car_id,
+          "start_datetime": start_time,
+          "end_datetime": end_time,
+        },
+        dataType: 'json', // added data type
+        success: function(res) {
+          console.log(res);
+          if (res["status"] == "401"){
+            $("#form-error").html(res["message"] + "<br><br>Select different dates from" + "<br>start date : " + start_time + "<br>end date : " + end_time);
+            $('#hold-car-form')[0].reset();
+          }
+          else{
+            $("#form-error").html("");
+            $("#submit-form-popup").removeAttr("disabled");
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+
+{% comment %} 
+<script>
+  $(document).ready(function() {
+    $('#hold-car-form').on('submit', function(event) {
+      event.preventDefault();
+      const form = $(this);
+      $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        dataType: 'json',
+        success: function(data) {
+          // handle success
+          console.log("ssssssssssssssssssssssssssssss")
+          console.log(data.message);
+          console.log(data["status"]);
+          if (data["status"] == "valid") {
+            window.location.href = "/client"
+          }
+          if (data["status"] == "400") {
+              $("#form-error").html(data["message"]);
+          }
+          // close modal here
+        },
+        error: function(data) {
+          // handle errors
+          console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+          console.log(data["message"]);
+          alert("Error!");
+          console.log(data.responseJSON);
+          // Display validations error in modal
+        }
+      });
+    });
+  });
+</script> {% endcomment %}
+
+{% comment %} <script>
+  $("#submit-form-popup").on("click", function(evt){
+    if(evt.detail.xhr.status === 200){
+      if(evt.detail.requestConfig.verb != 'get')
+      {
+          console.log("evt::::::::", evt)
+          window.location.reload();
+          
+      } 
+    else {
+      console.log(evt)
+    }
+    }
+  })
+</script> {% endcomment %}

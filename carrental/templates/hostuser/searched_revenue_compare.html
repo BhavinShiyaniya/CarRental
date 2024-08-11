@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <div class="row mt-5">
+        
+    {% if object_list %}
+        {% for rev in object_list %}
+        {% comment %} {% for car in top_cars_list %} {% endcomment %}
+        {% comment %} {% if car.id == rev.car %} {% endcomment %}
+        {% comment %} {{revenue}} {% endcomment %}
+        {% comment %} {{revenue.0.totalearning}}
+        {{revenue.0.net_commision}}
+        {{revenue.0.net_earning}} {% endcomment %}
+        <div class="col-sm-4">
+            <div class="card">
+                {% if ranking_list %}
+                {% if rev.net_earning == ranking_list.0 %}
+                <i class="fa-solid fa-medal text-success fa-xl ms-2 z-1"> 1</i>
+                {% elif rev.net_earning == ranking_list.1 %}
+                <i class="fa-solid fa-medal text-danger fa-xl ms-2 z-1"> 2</i>
+                {% elif rev.net_earning == ranking_list.2 %}
+                <i class="fa-solid fa-medal fa-xl text-secondary ms-2 z-1"> 3</i>
+                {% endif %} 
+                {% endif %} 
+                
+                <img src="{{ rev.car.car_image_set.all.0.car_images.url }}" class="card-img-top rounded" height="250px" width="100%">
+                <div class="card-body pt-4 px-0">
+                <div class="d-flex flex-row justify-content-between mb-0 px-3">
+                    <h6 class="text-dark mt-1">{{ rev.car.brand }} {{ rev.car.name }} {{ rev.car.manufacture_year }}</h6>
+                    <h6>₹ {{ rev.car.fare }} / hour</h6>
+                    {% comment %} <h6>{{ car.registration_no }}</h6> {% endcomment %}
+                </div>
+                <div class="d-flex flex-row justify-content-between mb-0 px-3">
+                    <small class="text-danger">({{ rev.car.registration_no }})</small>
+                </div>
+                <hr class="mt-2 mx-3">
+                <div class="d-flex flex-row justify-content-between px-3 pb-4">
+                    <div class="d-flex flex-column"><span class="text-muted">Total Earning</span><h5 class="text-primary text-center">₹ {{ rev.totalearning|floatformat:0 }}</h5></div>
+                    <div class="d-flex flex-column"><span class="text-muted">Commision</span><h5 class="text-danger text-center">₹ {{ rev.net_commision|floatformat:0 }}</h5></div>
+                    <div class="d-flex flex-column"><span class="text-muted">Net Earning</span><h5 class="text-success text-center">₹ {{ rev.net_earning|floatformat:0 }}</h5></div>
+                </div>
+                <div class="d-flex flex-row justify-content-between p-3 mid">
+                    <div class="d-flex flex-column"><span class="text-muted">Total Bookings</span><h5 class="text-center">{{ rev.booking }}</h5></div>
+                </div>
+                </div>
+            </div>
+        </div>
+        {% comment %} {% endif %}
+        {% endfor %} {% endcomment %}
+        {% endfor %}
+    {% endif %}
+  
+    </div>
+</div>

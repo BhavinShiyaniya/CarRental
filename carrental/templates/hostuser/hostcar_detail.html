@@ -1,0 +1,377 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static '/fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static '/css/jquery.fancybox.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static '/fonts/flaticon/font/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static '/css/aos.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+
+    <style>
+        .hero.inner-page, .hero.inner-page > .container > .row {
+            height: 10vh !important;
+            min-height: 80px;
+        }
+    </style>
+    <title>CarRental - Rent Car and Enjoy! </title>
+</head>
+<body>
+    <div class="site-wrap" id="home-section">
+
+        <!-- Navbar -->
+        {% include "navbar.html" %}
+
+        <div class="hero inner-page" style="background-image: url({% static 'images/hero_1_a.jpg' %});"></div>
+        <hr>
+
+       <section>
+           <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- <img src="{% static 'images/car_1.jpg' %}" class="img-fluid" alt=""> -->
+
+                        <!-- Start of Slick Slider -->
+                        <div id="slidermain" class="slidermain">
+                            {% for image in car.car_image_set.all %}
+                            <div>
+                                {% comment %} <img class="d-block" src="{{ image.car_images.url }}" style="min-height:400px;min-width:450px;"> {% endcomment %}
+                                <img class="rounded mx-auto d-block img-fluid" src="{{ image.car_images.url }}" width=80% height=auto>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+
+                        <div id="slidernav" class="slidernav mt-3">
+                            {% for image in car.car_image_set.all %}
+                            <div style="width:154px;margin:5px">
+                                <img class="d-block" src="{{ image.car_images.url }}" width=auto height="100px">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- End of Slick Slider -->
+
+                        <div>
+                            <div class="row">
+                                <div class="col">
+                                    <h3>{{ car.brand }} {{ car.name }} {{ car.manufacture_year }} </h3>
+                                    <p>{{ car.km_driven }} km driven</p>
+                                </div>
+
+                                <div class="col d-flex justify-content-end">
+                                    <div class="align-self-center">
+                                        <i class="fa fa-id-card warning fa-2xl float-left"></i>
+                                    </div>
+                                    <h4 class="ml-1 text-center align-self-center">{{ car.registration_no }}</span></h4>
+                                </div>
+
+                                <div class="col d-flex justify-content-end">
+                                    <div class="align-self-center">
+                                        <i class="fa fa-money-bill success fa-2xl float-left"></i>
+                                    </div>
+                                    <h4 class="ml-1 text-center align-self-center">₹ {{ car.fare }} <span class="text-danger">/ hour</span></h4>
+                                </div>
+                                
+                            </div><hr>
+
+                              <div class="row">
+                                <div class="col-xl-3 col-sm-6 col-12"> 
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-briefcase primary fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Brand</span>
+                                            <h5>{{ car.brand }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-car warning fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Model</span>
+                                            <h5>{{ car.name }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-gears success fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Transmission</span>
+                                            <h5>{{ car.transmission_type }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fas fa-car danger fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                              <span class="text-primary">Car Type</span>
+                                              <h5>{{ car.car_type }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-xl-3 col-sm-6 col-12"> 
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-gas-pump primary fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Fuel</span>
+                                            <h5>{{ car.fuel_type }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-tachometer fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Mileage</span>
+                                            <h5>20 kmpl</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-calendar success fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                            <span class="text-primary">Year</span>
+                                            <h5>{{ car.manufacture_year }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xl-3 col-sm-6 col-12">
+                                  <div class="card">
+                                    <div class="card-content">
+                                      <div class="card-body">
+                                        <div class="media d-flex">
+                                          <div class="align-self-center">
+                                            <i class="fa fa-chair danger fa-2xl float-left"></i>
+                                          </div>
+                                          <div class="media-body text-right">
+                                              <span class="text-primary">Seats</span>
+                                              <h5>{{ car.seats }}</h5>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-lg-4 col-md-offset-4">
+                        <div class="card" style="border-radius:15px;">
+                            <div class="card-body">
+                                <h2 class="text-uppercase text-center mb-2">Actions</h2><hr>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="#" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"><i class="fa fa-edit mr-1"></i>Update</a>
+                                    </div>
+                                    <div class="col">
+                                        {% comment %} <a href="{% url 'hostuser:cardelete' pk=car.id %}" class="btn btn-danger btn-block btn-lg gradient-custom-4 text-body"><i class="fa fa-trash mr-1"></i>Delete</a> {% endcomment %}
+                                        <button type="button" id="booknowbtn"
+                                        class="btn btn-danger btn-block btn-lg gradient-custom-4 text-body" data-toggle="modal" data-target="#confirmDeleteModal"><i class="fa fa-trash mr-1"></i>Delete</button>
+                              
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                
+                        <div class="card" style="border-radius:15px;">
+                            <div class="card-body">
+                                {% comment %} <h2 class="text-uppercase text-center mb-2">About Car</h2> {% endcomment %}
+
+                                <div class="container">
+                                  <h2 class="text-uppercase text-center mb-2">About Car</h2><hr>
+                                  <p>{{ car.description }}</p>
+                                </div>
+                  
+                
+                            </div>
+
+                          <div class="card" style="border-radius:15px;">
+                            <div class="card-body">
+                                <h2 class="text-uppercase text-center mb-2">Pickup Address</h2><hr>
+                                <div class="row">
+                                  <div class="text-justify">
+                                      <h4>{{ car.pickup_address }}, {{ car.pickup_city }}, {{ car.pickup_state }}, {{ car.pickup_country }} - {{ car.pickup_pincode }} </h4>
+                                  </div>
+                                </div>
+
+                                <hr>
+                                <div class="row d-flex justify-content-end">
+                                  <div class="align-self-center">
+                                      <i class="fa fa-user-circle grey fa-2xl float-left"></i>
+                                  </div>
+                                  <h4 class="ml-1 text-center align-self-center">Owned by, <span class="text-danger">{{ car.owner }}</span></h4>
+                                </div>
+
+                              
+                                
+                            </div>
+                          </div>
+                          
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalScrollableTitle">Delete</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <form method="POST">
+                {%csrf_token%}
+                <h2 style='color:red'>Are you sure?</h2><br/>
+                <h4>Once you delete, This Process can not reverse.</h4>
+                <input type="submit" class="btn btn-danger btn-block btn-lg gradient-custom-4 text-body" value="Delete" />
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    
+    </div>
+
+
+    <script src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static '/js/popper.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static '/js/jquery.sticky.js' %}"></script>
+    <script src="{% static '/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static '/js/jquery.animateNumber.min.js' %}"></script>
+    <script src="{% static '/js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static '/js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static '/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static '/js/aos.js' %}"></script>
+    <!-- <script src="{% static '/js/slick.min.js' %}"></script> -->
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="{% static '/js/main.js' %}"></script>
+
+    <!-- Slick Slider JS -->
+    <script>
+        $('.slidermain').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.slidernav'
+        });
+        $('.slidernav').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            asNavFor: '.slidermain',
+            dots: true,
+            centerMode: true,
+            focusOnSelect: true
+        });
+    </script>
+
+</body>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CarRental - Profile {% endblock title %}
+
+{% block stylesheet %}
+    <style>
+        .hero.inner-page, .hero.inner-page > .container > .row {
+        height: 10vh !important;
+        min-height: 80px;
+        }
+        .img-account-profile {
+            height: 10rem;
+        }
+        .rounded-circle {
+            border-radius: 50% !important;
+        }
+        .nav-tabs-bordered .nav-link.active {
+            background-color: #fff;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+    </style>
+{% endblock stylesheet %}
+
+{% block content %}
+
+
+
+    <div class="hero inner-page" style="background-image: url({% static 'images/hero_1_a.jpg' %});"></div>
+    <hr>
+    {% include "messages.html" %}
+  <section class="container">
+    <div class="container-xl px-4 mt-4">
+        <hr class="mt-0 mb-4">
+        <div class="row">
+            <div class="col-xl-4">
+                <!-- Profile picture card-->
+                <div class="card mb-4 mb-xl-0">
+                    <div class="card-header text-center">Profile Picture</div>
+                    <div class="card-body text-center">
+                        <!-- Profile picture image-->
+                        {% if user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" alt="Profile" class="img-account-profile rounded-circle mb-2">
+                        {% else %}
+                            <img src="{% static 'images/profile_image.webp' %}" alt="Profile" class="img-account-profile rounded-circle mb-2">
+                        {% endif %}
+                        <!-- Profile picture help block-->
+                        <div class="font-italic text-muted mt-2 mb-4">
+                            <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                            <h6>{{ user.email }}</h6>
+                        </div>
+                        <!-- Profile picture upload button-->
+                        <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#profileImageUpdateModal">
+                            Change Photo
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+
+                    <li class="nav-item mr-1">
+                    <button class="nav-link active" data-toggle="tab" data-target="#profile-overview">Overview</button>
+                    </li>
+    
+                    <li class="nav-item mr-1">
+                    <button class="nav-link" data-toggle="tab" data-target="#profile-edit">Edit Profile</button>
+                    </li>
+    
+                    <li class="nav-item mr-1">
+                    <button class="nav-link" data-toggle="tab" id="changePasswordTab" data-target="#profile-change-password">Change Password</button>
+                    </li>
+    
+                </ul>
+                
+                <div class="tab-content pt-2">
+                    <div class="tab-pane fade show active profile-overview card p-3" id="profile-overview">
+                        <h5 class="ml-2 mt-3 card-title text-primary">Profile Details</h5>
+                        <hr class="bg-dark">
+                        <div class="row">
+                        <div class="ml-2 col-lg-3 col-md-4 label">Username:</div>
+                        <div class="mr-2 col-lg-8 col-md-7">{{ user.username }}</div>
+                        </div>
+
+                        <div class="row">
+                        <div class="ml-2 col-lg-3 col-md-4 label">Full Name:</div>
+                        <div class="mr-2 col-lg-8 col-md-8">{{ user.first_name }} {{ user.last_name }}</div>
+                        </div>
+
+                        <div class="row">
+                        <div class="ml-2 col-lg-3 col-md-4 label">Phone:</div>
+                        <div class="mr-2 col-lg-8 col-md-8">{{ user.contact }}</div>
+                        </div>
+
+                        <div class="row">
+                        <div class="ml-2 col-lg-3 col-md-4 label">Email:</div>
+                        <div class="mr-2 col-lg-8 col-md-8">{{ user.email }}</div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                        <!-- Profile Edit Form -->
+                        <form method="POST" id="profileUpdateForm">
+                          {% csrf_token %}
+                          {% comment %} <div class="row mb-3">
+                            <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                            <div class="col-md-8 col-lg-9">
+                              <img src="assets/img/profile-img.jpg" alt="Profile">
+                              <div class="pt-2">
+                                <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                              </div>
+                            </div>
+                          </div> {% endcomment %}
+        
+                          <div class="row mb-3">
+                            <label for="username" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="username" type="text" class="form-control" id="username" value="{{ user.username }}" disabled>
+                              <p class="text-danger">* You can not change your username</p>
+                            </div>
+                          </div>
+        
+                          <div class="row mb-3">
+                            <label for="id_first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                            <div class="col-md-8 col-lg-9">
+                              {{ form.first_name }}
+                            </div>
+                          </div>
+        
+                          <div class="row mb-3">
+                            <label for="id_last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                            <div class="col-md-8 col-lg-9">
+                              {{ form.last_name }}
+                            </div>
+                          </div>
+        
+                          <div class="row mb-3">
+                            <label for="id_contact" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                            <div class="col-md-8 col-lg-9">
+                              {{ form.contact }}
+                            </div>
+                          </div>
+        
+                          <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="email" type="email" class="form-control" id="email" value="{{ user.email }}" disabled>
+                              <p class="text-danger">* You can not change your email</p>
+                            </div>
+                          </div>
+                        
+        
+                          <div class="text-center">
+                            <button type="submit" form="profileUpdateForm" class="btn btn-primary">Save Changes</button>
+                          </div>
+                        </form><!-- End Profile Edit Form -->
+        
+                    </div>
+
+                    <div class="tab-pane fade pt-3 profile-change-password" id="profile-change-password">
+                      
+                      <!-- Change Password Form -->
+                      <form action="{% url 'user:password_change' %}" method="POST" id="passwordChangeForm">
+                        {% csrf_token %} 
+                        
+                        
+                        <div class="row mb-3">
+                          <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                          <div class="col-md-8 col-lg-9">
+                            {{ passform.old_password }}
+                            {% comment %} <input name="password" type="password" class="form-control" id="currentPassword"> {% endcomment %}
+                          </div>
+                        </div>
+                        <span class="text-danger">{{ passform.old_password.errors }}</span>
+                  
+                        <div class="row mb-3">
+                          <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                          <div class="col-md-8 col-lg-9">
+                            {{ passform.new_password1 }}
+                            {% comment %} <input name="newpassword" type="password" class="form-control" id="newPassword"> {% endcomment %}
+                          </div>
+                        </div>
+                        <span class="text-danger">{{ passform.new_password1.errors }}</span>
+                  
+                        <div class="row mb-3">
+                          <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                          <div class="col-md-8 col-lg-9">
+                            {{ passform.new_password2 }}
+                            {% comment %} <input name="renewpassword" type="password" class="form-control" id="renewPassword"> {% endcomment %}
+                          </div>
+                        </div>
+                        <span class="text-danger">{{ passform.new_password2.errors }}</span>
+                        
+                        <div class="text-center">
+                          <button type="submit" form="passwordChangeForm" class="btn btn-primary change-password-btn">Change Password</button>
+                        </div>
+                        
+                      </form><!-- End Change Password Form -->
+                  
+                    </div>
+
+                </div>
+              
+              
+            </div>
+        </div>
+    </div>
+
+  </section>
+
+  <!-- Profile Image Update Modal Start -->
+  <div class="modal fade" id="profileImageUpdateModal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Change Profile Image</h5>
+          <button type="button" class="btn" data-dismiss="modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          {% comment %}  action={% url 'user:profileimageupdate' pk=request.user.id %} {% endcomment %}
+          <form method="POST" action={% url 'user:profileimageupdate' pk=request.user.id %} enctype="multipart/form-data" id="imageupdateform">
+            {% csrf_token %}
+            <div class="col-md-12">
+              {{imageform.profile_image}}
+              {% comment %} <input type="file" class="form-control" name="profile_image" id="profile_image" accept="image/*"> {% endcomment %}
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" form="imageupdateform" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Profile Image Update Modal End -->
+
+
+{% endblock content %}
+
+{% block javascripts %}
+
+{% comment %} <script>
+
+
+  $(".change-password-btn").on('click', function(event){
+    console.log(":::::::;;;;");
+    event.preventDefault();
+    $.ajax({
+      //url: "{% url 'user:password_change' %}",
+      type: 'POST',
+      data: {
+        "csrfmiddlewaretoken": '{{ csrf_token }}'
+      },
+      success: function(res) {
+        console.log(res);
+        
+      },
+      error: function(error) {
+        console.log('error', error);
+      }
+    });
+  });
+
+</script> {% endcomment %}
+
+{% endblock javascripts %}

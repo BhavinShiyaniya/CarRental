@@ -1,0 +1,54 @@
+{% extends "hostuser_base/hostuser_base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Start Delete Car Modal-->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Delete Card Start -->
+          <div class="col-xl-12 col-sm-12 col-12 d-flex justify-content-center"> 
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media d-flex">
+                    <div class="align-self-center">
+                      <i class="ri-delete-bin-2-fill text-danger fa-5x float-left" style="margin-right:15px;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END Delete Card -->
+          <hr>
+          <h3 class="text-grey text-center">Are you sure you want to permanently delete<span class="text-danger"> {{ car.brand }} {{ car.name }} {{ car.manufacture_year }}</span>?</h3>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          {% if request.path == '/hostuser/dashboard/' or request.path == '/hostuser/carlist/' %}
+            {% if usercars %}
+              {% for car in usercars %}
+                <form action="{% url 'hostuser:cardelete' pk=car.id %}" method="POST">
+                  {{ car.id}}
+              {% endfor %}
+            {% endif %}
+            {% else %}
+            <form action="{% url 'hostuser:cardelete' pk=car.id %}" method="POST">
+              {{car.id}}
+            {% endif %}
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Delete" />
+          </form>
+          {% comment %} <button type="button" class="btn btn-danger">Delete</button> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div><!-- End Delete Car Modal-->
+
+{% endblock content %}
